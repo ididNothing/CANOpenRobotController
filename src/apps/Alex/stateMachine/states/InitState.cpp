@@ -7,7 +7,7 @@ void InitState::entry(void) {
         << "==================================" << endl
         << endl
         << "========================" << endl
-        << " PRESS S to start program" << endl
+        << " PRESS D to start program" << endl
         << "========================" << endl;
     //Initialize OD entries - Must be something other then Initial -> must be sent by crutch @ startup
     robot->setCurrentState(AlexState::Init);

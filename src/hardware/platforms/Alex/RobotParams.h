@@ -13,7 +13,7 @@
 #ifndef ROBOT_PARAMS_H
 #define ROBOT_PARAMS_H
 
-//#define _NOANKLES  //w / o ankles
+#define _NOANKLES  //w / o ankles
 #ifndef _NOANKLES
 #define NUM_JOINTS 6
 #else
@@ -42,7 +42,8 @@ enum class AlexState { Error,
                        StepL,
                        StepR,
                        BackStepR,
-                       BackStepL };
+                       BackStepL,
+                       Debug };
 /**
  * An enum type.
  * Joint Index for the 6 joints (note, NODEID = this + 1)
