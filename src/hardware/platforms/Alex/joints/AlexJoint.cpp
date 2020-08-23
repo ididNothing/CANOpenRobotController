@@ -21,9 +21,12 @@ AlexJoint::AlexJoint(int jointID, double jointMin, double jointMax, Drive *drive
 }
 
 bool AlexJoint::updateValue() {
+#ifndef VIRTUAL
     q = fromDriveUnits(drive->getPos());
-    // FOR TESTING w/o real robot -> set current pos to last setPosition
-    //q = lastQCommand;
+#endif
+#ifdef VIRTUAL
+    q = lastQCommand;
+#endif
 
     return true;
 }

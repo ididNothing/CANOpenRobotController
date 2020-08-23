@@ -36,6 +36,7 @@ typedef struct keys {
     bool w;
     bool x;
     bool q;
+    bool r;
 } key_states;
 
 /**
@@ -44,8 +45,8 @@ typedef struct keys {
  */
 class Keyboard : public InputDevice {
    private:
-    key_states lastKeyStates = {false, false, false, false, false, false, false};
-    key_states currentKeyStates = {false, false, false, false, false, false, false};
+    key_states lastKeyStates = {false, false, false, false, false, false, false, false};
+    key_states currentKeyStates = {false, false, false, false, false, false, false, false};
     int keyboardActive;
 
    public:
@@ -120,6 +121,11 @@ class Keyboard : public InputDevice {
  * 
  */
     bool getQ();
+    /**
+ * \brief Getter method for private R key state
+ * 
+ */
+    bool getR();
     /**
  * \brief Termios structs for turning on and off terminal echo
  * 

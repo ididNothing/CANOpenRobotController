@@ -127,11 +127,10 @@ bool AlexMachine::EndTraj::check() {
     if (OWNER->trajectoryGenerator->isTrajectoryFinished(OWNER->robot->getCurrTrajProgress()) && !OWNER->robot->getGo()) {
         return true;
     }
-    // testing w/o green button
-    // if (OWNER->trajectoryGenerator->isTrajectoryFinished(OWNER->robot->getCurrTrajProgress())) {
-    //     return true;
-    // }
-    else {
+    // testing with keyboard
+    if (OWNER->robot->keyboard.getW() == true) {
+        return true;
+    } else {
         return false;
     }
 }
@@ -148,7 +147,7 @@ bool AlexMachine::StartExo::check(void) {
 }
 bool AlexMachine::FeetTogether::check(void) {
     //if (OWNER->robot->getResetFlag()) {
-    if (OWNER->robot->getCurrentMotion() == RobotMode::FTTG && OWNER->robot->keyboard.getA()) {
+    if (OWNER->robot->keyboard.getA()) {
         return true;
     }
     if (OWNER->robot->getCurrentMotion() == RobotMode::FTTG && OWNER->robot->getGo()) {
@@ -218,7 +217,7 @@ bool AlexMachine::UpStairSelect::check(void) {
     if (OWNER->robot->getCurrentMotion() == RobotMode::UPSTAIR && OWNER->robot->getGo()) {
         DEBUG_OUT("up stair step selected")
         return true;
-    }  else {
+    } else {
         return false;
     }
 }
@@ -226,15 +225,25 @@ bool AlexMachine::DownStairSelect::check(void) {
     if (OWNER->robot->getCurrentMotion() == RobotMode::DWNSTAIR && OWNER->robot->getGo()) {
         DEBUG_OUT("down stair step selected")
         return true;
-    }  else {
+    } else {
         return false;
     }
 }
 bool AlexMachine::IsRPressed::check(void) {
+#ifdef KEYBOARD
+    return OWNER->robot->keyboard.getR();
+#endif
+#ifndef KEYBOARD
     return OWNER->robot->buttons.getErrorButton();
+#endif
 }
 bool AlexMachine::ResetButtons::check(void) {
+#ifdef KEYBOARD
+    return OWNER->robot->keyboard.getR();
+#endif
+#ifndef KEYBOARD
     return !(OWNER->robot->buttons.getErrorButton());
+#endif
 }
 
 /**
