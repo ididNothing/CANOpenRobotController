@@ -5,10 +5,17 @@ void InitState::entry(void) {
         << "==================================" << endl
         << " WELCOME USER" << endl
         << "==================================" << endl
-        << endl
-        << "========================" << endl
-        << " PRESS D to start program" << endl
-        << "========================" << endl;
+        << endl;
+#ifdef KEYBOARD
+    std::cout << "========================" << endl
+              << " PRESS D to start program" << endl
+              << "========================" << endl;
+#endif
+#ifdef VIRTUAL
+    std::cout << "========================" << endl
+              << " Press S to enter Debug state" << endl
+              << "========================" << endl;
+#endif
     //Initialize OD entries - Must be something other then Initial -> must be sent by crutch @ startup
     robot->setCurrentState(AlexState::Init);
     robot->setCurrentMotion(RobotMode::NORMALWALK);

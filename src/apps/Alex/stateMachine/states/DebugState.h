@@ -8,8 +8,10 @@
  * 
  */
 
-#ifndef DEBUG_H_INCLUDED
-#define DEBUG_H_INCLUDED
+#ifndef DEBUGSTATE_H_INCLUDED
+#define DEBUGSTATE_H_INCLUDED
+
+#define INCREMENT 0.5
 
 #include "ExoTestState.h"
 
@@ -20,13 +22,14 @@
  * State machine can only enter this state with the keyboard input and when the VIRTUAL flag is defined (see DebugMacro.h)
  */
 class DebugState : public ExoTestState {
-   public:
+   protected:
     double angle = 0;
 
+   public:
     void entry(void);
     void during(void);
     void exit(void);
-    Standing(StateMachine *m, AlexRobot *exo, AlexTrajectoryGenerator *tg, const char *name = NULL) : ExoTestState(m, exo, tg, name){};
+    DebugState(StateMachine *m, AlexRobot *exo, AlexTrajectoryGenerator *tg, const char *name = NULL) : ExoTestState(m, exo, tg, name){};
 };
 
 #endif

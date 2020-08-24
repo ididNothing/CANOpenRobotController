@@ -1,28 +1,40 @@
 ////////// STATE ////////////////////
-//-------  Standing ------------/////
+//-------  Debug ------------/////
 ////////////////////////////////////
-#include "Standing.h"
+#include "DebugState.h"
 
-void Standing::entry(void) {
+void DebugState::entry(void) {
     std::cout << "Debug State entered" << std::endl
               << "=======================" << std::endl
-              << " ^ ->> Increase input angle" << std::endl
-              << " v ->> Decrease input angle" << std::endl
+              << " + ->> Increase input angle" << std::endl
+              << " - ->> Decrease input angle" << std::endl
               << " return ->> Send input angle" << std::endl
               << "=======================" << std::endl
               << std::endl;
+    std::cout << "========================" << endl
+              << " Press S to leave debug state" << endl
+              << "========================" << endl;
+
     robot->setCurrentState(AlexState::Debug);
 
     // entry flag must be set to true by a green button release
     robot->setResetFlag(false);
 }
 
-void Standing::during(void) {
+void DebugState::during(void) {
+    if (robot->keyboard.getPlus()) {
+        angle = angle + INCREMENT;
+        std::cout << "angle is " << angle << std::endl;
+    }
+    if (robot->keyboard.getMinus()) {
+        angle = angle - INCREMENT;
+        std::cout << "angle is " << angle << std::endl;
+    }
     updateCrutch();
     updateFlag();
 }
 
-void Standing::exit(void) {
+void DebugState::exit(void) {
     std::cout
-        << "Standing State Exited" << endl;
+        << "Debug State Exited" << endl;
 }

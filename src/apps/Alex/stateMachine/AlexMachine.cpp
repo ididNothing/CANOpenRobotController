@@ -1,7 +1,7 @@
 
 #include "AlexMachine.h"
 
-#define OWNER ((AlexMachine *)owner)
+#define OWNER ((AlexMachine*)owner)
 
 AlexMachine::AlexMachine() {
     trajectoryGenerator = new AlexTrajectoryGenerator(6);
@@ -18,6 +18,10 @@ AlexMachine::AlexMachine() {
     downStairSelect = new DownStairSelect(this);
     isRPressed = new IsRPressed(this);
     resetButtonsPressed = new ResetButtons(this);
+
+#ifdef VIRTUAL
+    debugTransition = new DebugTransition(this);
+#endif
 
     //States
     initState = new InitState(this, robot, trajectoryGenerator);
@@ -40,6 +44,9 @@ AlexMachine::AlexMachine() {
     steppingLeftStair = new SteppingLeftStair(this, robot, trajectoryGenerator);
     steppingRightStairDown = new SteppingRightStairDown(this, robot, trajectoryGenerator);
     steppingLeftStairDown = new SteppingLeftStairDown(this, robot, trajectoryGenerator);
+#ifdef VIRTUAL
+    debug = new DebugState(this, robot, trajectoryGenerator);
+#endif
     /**
      * \brief Moving Trajectory Transitions
      *
@@ -72,6 +79,10 @@ AlexMachine::AlexMachine() {
     NewTransition(backStepLeft, endTraj, rightForward);
     NewTransition(rightForward, backStep, backStepRight);
     NewTransition(backStepRight, endTraj, leftForward);
+#ifdef VIRTUAL
+    NewTransition(initState, debugTransition, debug);
+    NewTransition(debug, debugTransition, initState);
+#endif
 
     /*Stair stepping transitions*/
     NewTransition(standing, upStairSelect, steppingLeftStair);
@@ -145,6 +156,7 @@ bool AlexMachine::StartExo::check(void) {
     }
     return false;
 }
+
 bool AlexMachine::FeetTogether::check(void) {
     //if (OWNER->robot->getResetFlag()) {
     if (OWNER->robot->keyboard.getA()) {
@@ -171,6 +183,7 @@ bool AlexMachine::StandSelect::check(void) {
     }
     return false;
 }
+
 bool AlexMachine::SitSelect::check(void) {
     if (OWNER->robot->getResetFlag()) {
         if (OWNER->robot->keyboard.getA()) {
@@ -184,6 +197,7 @@ bool AlexMachine::SitSelect::check(void) {
         }
     }
 }
+
 bool AlexMachine::WalkSelect::check(void) {
     // \todo change to switch statement
     if (OWNER->robot->getCurrentMotion() == RobotMode::NORMALWALK && OWNER->robot->keyboard.getS()) {
@@ -205,6 +219,7 @@ bool AlexMachine::WalkSelect::check(void) {
         return false;
     }
 }
+
 bool AlexMachine::BackStep::check(void) {
     if (OWNER->robot->getCurrentMotion() == RobotMode::BKSTEP && OWNER->robot->getGo()) {
         DEBUG_OUT("Backstep selected by crutch!")
@@ -213,6 +228,7 @@ bool AlexMachine::BackStep::check(void) {
         return false;
     }
 }
+
 bool AlexMachine::UpStairSelect::check(void) {
     if (OWNER->robot->getCurrentMotion() == RobotMode::UPSTAIR && OWNER->robot->getGo()) {
         DEBUG_OUT("up stair step selected")
@@ -221,6 +237,7 @@ bool AlexMachine::UpStairSelect::check(void) {
         return false;
     }
 }
+
 bool AlexMachine::DownStairSelect::check(void) {
     if (OWNER->robot->getCurrentMotion() == RobotMode::DWNSTAIR && OWNER->robot->getGo()) {
         DEBUG_OUT("down stair step selected")
@@ -229,6 +246,7 @@ bool AlexMachine::DownStairSelect::check(void) {
         return false;
     }
 }
+
 bool AlexMachine::IsRPressed::check(void) {
 #ifdef KEYBOARD
     return OWNER->robot->keyboard.getR();
@@ -237,6 +255,7 @@ bool AlexMachine::IsRPressed::check(void) {
     return OWNER->robot->buttons.getErrorButton();
 #endif
 }
+
 bool AlexMachine::ResetButtons::check(void) {
 #ifdef KEYBOARD
     return OWNER->robot->keyboard.getR();
@@ -244,6 +263,10 @@ bool AlexMachine::ResetButtons::check(void) {
 #ifndef KEYBOARD
     return !(OWNER->robot->buttons.getErrorButton());
 #endif
+}
+
+bool AlexMachine::DebugTransition::check(void) {
+    return OWNER->robot->keyboard.getS();
 }
 
 /**
