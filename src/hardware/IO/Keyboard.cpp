@@ -34,10 +34,6 @@ void Keyboard::setKeys() {
     /* Set States, limited to one key Press at a time*/
 
     switch (ch) {
-        // TO do add this case when timeout of read occurs
-        //case ERR:
-        //     //do nothing, just capture and keep runnin
-        //     printf("No input from keyboard\n");
         case 'a':
         case 'A':
             currentKeyStates.a = true;
@@ -62,12 +58,22 @@ void Keyboard::setKeys() {
         case 'X':
             currentKeyStates.x = true;
             break;
+        case 'r':
+        case 'R':
+            currentKeyStates.r = true;
+            break;
         case 'q':
         case 'Q':
             currentKeyStates.q = true;
             std::cout << std::endl
                       << "Q PRESSED, EXITING PROGRAM "
                       << std::endl;
+            break;
+        case '+':
+            currentKeyStates.plus = true;
+            break;
+        case '-':
+            currentKeyStates.minus = true;
             break;
         default:
             keyboardActive = 0;
@@ -77,7 +83,8 @@ key_states Keyboard::getStates() {
     key_states current_state = {this->currentKeyStates.a, this->currentKeyStates.s,
                                 this->currentKeyStates.d, this->currentKeyStates.w,
                                 this->currentKeyStates.x, this->currentKeyStates.x,
-                                this->currentKeyStates.e};
+                                this->currentKeyStates.e, this->currentKeyStates.r,
+                                this->currentKeyStates.plus, this->currentKeyStates.minus};
     return current_state;
 };
 void Keyboard::printPressed() {
@@ -105,6 +112,18 @@ void Keyboard::printPressed() {
         std::cout
             << "PRESSED X " << std::endl;
     }
+    if (getR()) {
+        std::cout
+            << "PRESSED R " << std::endl;
+    }
+    if (getPlus()) {
+        std::cout
+            << "PRESSED PLUS " << std::endl;
+    }
+    if (getMinus()) {
+        std::cout
+            << "PRESSED MINUS " << std::endl;
+    }
 }
 void Keyboard::clearCurrentStates() {
     currentKeyStates.a = false;
@@ -113,6 +132,9 @@ void Keyboard::clearCurrentStates() {
     currentKeyStates.d = false;
     currentKeyStates.w = false;
     currentKeyStates.x = false;
+    currentKeyStates.r = false;
+    currentKeyStates.plus = false;
+    currentKeyStates.minus = false;
 }
 bool Keyboard::getA() {
     return currentKeyStates.a;
@@ -136,6 +158,15 @@ bool Keyboard::getX() {
 bool Keyboard::getQ() {
     return currentKeyStates.q;
 };
+bool Keyboard::getR() {
+    return currentKeyStates.r;
+}
+bool Keyboard::getPlus() {
+    return currentKeyStates.plus;
+};
+bool Keyboard::getMinus() {
+    return currentKeyStates.minus;
+}
 int Keyboard::kbhit() {
     struct timeval tv;
     fd_set fds;

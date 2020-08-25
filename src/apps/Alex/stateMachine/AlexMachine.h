@@ -46,6 +46,7 @@
 // State Classes
 #include "BackStepLeft.h"
 #include "BackStepRight.h"
+#include "DebugState.h"
 #include "ErrorState.h"
 #include "InitState.h"
 #include "InitialSitting.h"
@@ -59,11 +60,11 @@
 #include "SteppingLastLeft.h"
 #include "SteppingLastRight.h"
 #include "SteppingLeft.h"
+#include "SteppingLeftStair.h"
+#include "SteppingLeftStairDown.h"
 #include "SteppingRight.h"
 #include "SteppingRightStair.h"
-#include "SteppingLeftStair.h"
 #include "SteppingRightStairDown.h"
-#include "SteppingLeftStairDown.h"
 /**
  * @brief Example implementation of a StateMachine for the ExoRobot class. States should implemented ExoTestState
  *
@@ -110,6 +111,9 @@ class AlexMachine : public StateMachine {
     SteppingRightStair* steppingRightStair;
     SteppingLeftStairDown* steppingLeftStairDown;
     SteppingRightStairDown* steppingRightStairDown;
+#ifdef VIRTUAL
+    DebugState* debug;
+#endif
    protected:
     AlexRobot* robot; /*<!Pointer to the Robot*/
 
@@ -137,6 +141,9 @@ class AlexMachine : public StateMachine {
     EventObject(UpStairSelect) * upStairSelect;
     EventObject(DownStairSelect) * downStairSelect;
 
+#ifdef VIRTUAL
+    EventObject(DebugTransition) * debugTransition;
+#endif
 };
 
 #endif /*EXO_SM_H*/
