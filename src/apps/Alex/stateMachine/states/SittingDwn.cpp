@@ -5,7 +5,7 @@
 void SittingDwn::entry(void) {
     std::cout << "Sitting Down State Entered " << endl
               << "===================" << endl
-              << " GREEN -> SIT DOWN " << endl
+              << " TRIGGER -> SIT DOWN " << endl
               << "===================" << endl;
     trajectoryGenerator->initialiseTrajectory(RobotMode::SITDWN, robot->getJointStates());
     robot->startNewTraj();

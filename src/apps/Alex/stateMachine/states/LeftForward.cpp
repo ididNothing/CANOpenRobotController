@@ -4,9 +4,11 @@ void LeftForward::entry(void) {
     std::cout
         << "========================" << endl
         << " Left FORWARD STATE " << endl
+#ifdef KEYBOARD
         << " S ->> WALK " << endl
         << " A ->> FEET TOGETHER " << endl
-        << "========================n" << endl;
+#endif
+        << "========================" << endl;
     robot->setCurrentState(AlexState::LeftForward);
     //robot->pb.printMenu();
     // entry flag must be set to true by a green button release

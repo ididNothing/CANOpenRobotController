@@ -2,9 +2,9 @@
 
 // Negative bending control machine
 void StandingUp::entry(void) {
-    std::cout << "===================" << endl
-              << " STANDING UP" << endl
-              << " GREEN -> STAND UP" << endl
+    std::cout << "Standing Up State Entered" << endl
+              << "===================" << endl
+              << " TRIGGER ->> STAND UP" << endl
               << "===================" << endl;
     trajectoryGenerator->initialiseTrajectory(RobotMode::STNDUP, robot->getJointStates());
     robot->startNewTraj();

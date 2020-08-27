@@ -4,8 +4,10 @@ void RightForward::entry(void) {
     std::cout
         << "========================" << endl
         << " RIGHT FORWARD STATE " << endl
+#ifdef KEYBOARD
         << " S ->> WALK " << endl
         << " A ->> FEET TOGETHER " << endl
+#endif
         << "========================n" << endl;
     robot->setCurrentState(AlexState::RightForward);
     //robot->pb.printMenu();
