@@ -8,6 +8,12 @@ void SteppingRight::entry(void) {
     trajectoryGenerator->initialiseTrajectory(robot->getCurrentMotion(), Foot::Left, robot->getJointStates());
     robot->startNewTraj();
     robot->setCurrentState(AlexState::StepR);
+#ifdef VIRTUAL
+    std::cout
+        << "==================" << endl
+        << " W ->> Complete trajectory" << endl
+        << "==================" << endl;
+#endif
 }
 void SteppingRight::during(void) {
     robot->moveThroughTraj();

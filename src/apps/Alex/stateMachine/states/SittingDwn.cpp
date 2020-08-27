@@ -10,6 +10,12 @@ void SittingDwn::entry(void) {
     trajectoryGenerator->initialiseTrajectory(RobotMode::SITDWN, robot->getJointStates());
     robot->startNewTraj();
     robot->setCurrentState(AlexState::SittingDown);
+#ifdef VIRTUAL
+    std::cout
+        << "==================" << endl
+        << " W ->> Complete trajectory" << endl
+        << "==================" << endl;
+#endif
 }
 void SittingDwn::during(void) {
     // w/o crutch Go button

@@ -9,6 +9,12 @@ void StandingUp::entry(void) {
     trajectoryGenerator->initialiseTrajectory(RobotMode::STNDUP, robot->getJointStates());
     robot->startNewTraj();
     robot->setCurrentState(AlexState::StandingUp);
+#ifdef VIRTUAL
+    std::cout
+        << "==================" << endl
+        << " W ->> Complete trajectory" << endl
+        << "==================" << endl;
+#endif
 }
 
 void StandingUp::during(void) {

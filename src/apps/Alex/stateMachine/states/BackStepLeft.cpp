@@ -8,6 +8,12 @@ void BackStepLeft::entry(void) {
     trajectoryGenerator->initialiseTrajectory(RobotMode::BKSTEP, robot->getJointStates());
     robot->startNewTraj();
     robot->setCurrentState(AlexState::BackStepL);
+#ifdef VIRTUAL
+    std::cout
+        << "==================" << endl
+        << " W ->> Complete trajectory" << endl
+        << "==================" << endl;
+#endif
 }
 void BackStepLeft::during(void) {
     robot->moveThroughTraj();

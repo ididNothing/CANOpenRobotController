@@ -5,6 +5,12 @@ void InitialSitting::entry(void) {
     trajectoryGenerator->initialiseTrajectory(RobotMode::INITIAL, robot->getJointStates());
     robot->startNewTraj();
     robot->setCurrentState(AlexState::InitSitting);
+#ifdef VIRTUAL
+    std::cout
+        << "==================" << endl
+        << " W ->> Complete trajectory" << endl
+        << "==================" << endl;
+#endif
 }
 void InitialSitting::during(void) {
     // w/o crutch Go button

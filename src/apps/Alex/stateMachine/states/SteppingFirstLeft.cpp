@@ -9,6 +9,12 @@ void SteppingFirstLeft::entry(void) {
     trajectoryGenerator->initialiseTrajectory(robot->getCurrentMotion(), robot->getJointStates());
     robot->startNewTraj();
     robot->setCurrentState(AlexState::StepFirstL);
+#ifdef VIRTUAL
+    std::cout
+        << "==================" << endl
+        << " W ->> Complete trajectory" << endl
+        << "==================" << endl;
+#endif
 }
 void SteppingFirstLeft::during(void) {
     robot->moveThroughTraj();

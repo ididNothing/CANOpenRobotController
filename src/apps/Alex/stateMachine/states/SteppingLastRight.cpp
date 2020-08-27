@@ -9,6 +9,12 @@ void SteppingLastRight::entry(void) {
     trajectoryGenerator->initialiseTrajectory(RobotMode::FTTG, Foot::Left, robot->getJointStates());
     robot->startNewTraj();
     robot->setCurrentState(AlexState::StepLastR);
+#ifdef VIRTUAL
+    std::cout
+        << "==================" << endl
+        << " W ->> Complete trajectory" << endl
+        << "==================" << endl;
+#endif
 }
 void SteppingLastRight::during(void) {
     robot->moveThroughTraj();
