@@ -91,7 +91,7 @@ exe: checkdirs main
 
 #On Windows - Substitute with command at end of file for UNIX-based systems
 $(BUILD_DIR):
-	@mkdir $(subst /,\\,$@)
+	@mkdir -p $@
 
 # #
 clean:

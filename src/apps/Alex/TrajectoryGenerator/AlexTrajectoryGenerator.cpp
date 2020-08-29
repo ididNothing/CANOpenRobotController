@@ -758,7 +758,7 @@ std::vector<taskspace_state> AlexTrajectoryGenerator::generate_key_taskspace_sta
             {
                 stateEnd.left_ankle_position.x = initialTaskspaceState.right_ankle_position.x + trajectoryParameters.step_length;
                 stateEnd.right_ankle_position.x = initialTaskspaceState.right_ankle_position.x;
-                stateEnd.hip_position.x = initialTaskspaceState.right_ankle_position.x + trajectoryParameters.step_length * / 2.0;
+                stateEnd.hip_position.x = initialTaskspaceState.right_ankle_position.x + trajectoryParameters.step_length / 2.0;
                 stateEnd.right_ankle_position.z = pilotParameters.ankle_height;
                 stateEnd.left_ankle_position.z = pilotParameters.ankle_height + trajectoryParameters.step_end_height;
             }
@@ -766,7 +766,7 @@ std::vector<taskspace_state> AlexTrajectoryGenerator::generate_key_taskspace_sta
             else {
                 stateEnd.right_ankle_position.x = initialTaskspaceState.left_ankle_position.x + trajectoryParameters.step_length;
                 stateEnd.left_ankle_position.x = initialTaskspaceState.left_ankle_position.x;
-                stateEnd.hip_position.x = initialTaskspaceState.left_ankle_position.x + trajectoryParameters.step_length */ 2.0;
+                stateEnd.hip_position.x = initialTaskspaceState.left_ankle_position.x + trajectoryParameters.step_length / 2.0;
                 stateEnd.left_ankle_position.z = pilotParameters.ankle_height;
                 stateEnd.right_ankle_position.z = pilotParameters.ankle_height + trajectoryParameters.step_end_height;
             }
@@ -776,7 +776,7 @@ std::vector<taskspace_state> AlexTrajectoryGenerator::generate_key_taskspace_sta
                 stateEnd.hip_position.z = pilotParameters.ankle_height + legLengthSlacked;
             }
             else {
-                stateEnd.hip_position.z = pilotParameters.ankle_height + 0.999 * (sqrt(pow(legLengthSlacked, 2.0) - pow(trajectoryParameters.step_length * /2.0, 2.0)));
+                stateEnd.hip_position.z = pilotParameters.ankle_height + 0.999 * (sqrt(pow(legLengthSlacked, 2.0) - pow(trajectoryParameters.step_length /2.0, 2.0)));
             }
             stateEnd.time = 1;
             stateEnd.torso_forward_angle = trajectoryParameters.torso_forward_angle;
@@ -872,7 +872,7 @@ std::vector<taskspace_state> AlexTrajectoryGenerator::generate_key_taskspace_sta
             {
                 stateEnd.left_ankle_position.x = initialTaskspaceState.right_ankle_position.x + trajectoryParameters.step_length;
                 stateEnd.right_ankle_position.x = initialTaskspaceState.right_ankle_position.x;
-                stateEnd.hip_position.x = initialTaskspaceState.right_ankle_position.x + trajectoryParameters.step_length * / 2.0;
+                stateEnd.hip_position.x = initialTaskspaceState.right_ankle_position.x + trajectoryParameters.step_length / 2.0;
                 stateEnd.right_ankle_position.z = pilotParameters.ankle_height;
                 stateEnd.left_ankle_position.z = pilotParameters.ankle_height + trajectoryParameters.step_end_height;
             }
@@ -880,7 +880,7 @@ std::vector<taskspace_state> AlexTrajectoryGenerator::generate_key_taskspace_sta
             else {
                 stateEnd.right_ankle_position.x = initialTaskspaceState.left_ankle_position.x + trajectoryParameters.step_length;
                 stateEnd.left_ankle_position.x = initialTaskspaceState.left_ankle_position.x;
-                stateEnd.hip_position.x = initialTaskspaceState.left_ankle_position.x + trajectoryParameters.step_length * / 2.0;
+                stateEnd.hip_position.x = initialTaskspaceState.left_ankle_position.x + trajectoryParameters.step_length / 2.0;
                 stateEnd.left_ankle_position.z = pilotParameters.ankle_height;
                 stateEnd.right_ankle_position.z = pilotParameters.ankle_height + trajectoryParameters.step_end_height;
             }
@@ -890,7 +890,7 @@ std::vector<taskspace_state> AlexTrajectoryGenerator::generate_key_taskspace_sta
                 stateEnd.hip_position.z = pilotParameters.ankle_height + legLengthSlacked;
             }
             else {
-                stateEnd.hip_position.z = pilotParameters.ankle_height + 0.999 * (sqrt(pow(legLengthSlacked, 2.0) - pow(trajectoryParameters.step_length * / 2.0, 2.0)));
+                stateEnd.hip_position.z = pilotParameters.ankle_height + 0.999 * (sqrt(pow(legLengthSlacked, 2.0) - pow(trajectoryParameters.step_length / 2.0, 2.0)));
             }
             stateEnd.time = 1;
             stateEnd.torso_forward_angle = trajectoryParameters.torso_forward_angle;
@@ -972,7 +972,7 @@ std::vector<taskspace_state> AlexTrajectoryGenerator::generate_key_taskspace_sta
         double heightDistance = abs(initialTaskspaceState.left_ankle_position.z - initialTaskspaceState.right_ankle_position.z);
         double legLengthSlacked = pilotParameters.lowerleg_length + pilotParameters.upperleg_length - trajectoryParameters.hip_height_slack;
         double hipHeight = pilotParameters.ankle_height + legLengthSlacked;
-        double stanceFoot_x = std::max(initialTaskspaceState.left_ankle_position.x, initialTaskspaceState.right_ankle_position);
+        double stanceFoot_x = std::max(initialTaskspaceState.left_ankle_position.x, initialTaskspaceState.right_ankle_position.x);
 
         // Middle state
         {
@@ -1332,7 +1332,7 @@ std::vector<jointspace_state> AlexTrajectoryGenerator::taskspace_states_to_joint
       //If any part contains NaN, make all points in jointspaceStates just the initial jointstatespace points
       else{
         tempJointspacestate = taskspace_state_to_jointspace_state(taskspaceState, trajectoryParameters, pilotParameters);
-        for(int i = 0; i < tempJointspacestate.q.size(); i++) {
+        for(int i = 0; i < sizeof(tempJointspacestate.q); i++) {
           tempJointspacestate.q[i] = initialJointspaceState.q[i];
         }
         jointspaceStates.push_back(tempJointspacestate);
@@ -1660,12 +1660,12 @@ void AlexTrajectoryGenerator::limit_position_against_angle_boundary(std::vector<
         }
     }
 }
-bool AlexTrajectoryGenerator:jointspace_NaN_check(jointspace_state checkJointspaceState){
+bool AlexTrajectoryGenerator::jointspace_NaN_check(jointspace_state checkJointspaceState){
   bool containNaN  = false;
   //check whether the checkJointspaceState contains NaN
-  for(int i = 0; i < checkJointspaceState.q.size(); i++) {
+  for(int i = 0; i < sizeof(checkJointspaceState.q); i++) {
     //Flag it if it does contains NaN
-    if(std::isnan(checkJointspaceState.q[i]){
+    if(std::isnan(checkJointspaceState.q[i])) {
       containNaN = true;
     }
   }
