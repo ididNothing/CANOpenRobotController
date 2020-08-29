@@ -382,7 +382,7 @@ class AlexTrajectoryGenerator : public TrajectoryGenerator {
 
     //calculate the velocity at any given time
     //void calcVelocity(time_tt time, double *velocityArray);
-
+    bool jointspace_NaN_check(jointspace_state checkJointspaceState);
    public:
     int numJoints = 6;
     //TEST FUNCTION

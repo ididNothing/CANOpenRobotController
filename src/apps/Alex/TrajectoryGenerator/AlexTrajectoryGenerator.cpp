@@ -1314,13 +1314,30 @@ std::vector<jointspace_state> AlexTrajectoryGenerator::taskspace_states_to_joint
     TrajectoryParameters trajectoryParameters,
     PilotParameters pilotParameters) {
     std::vector<jointspace_state> jointspaceStates;
-
+    jointspace_state tempJointspacestate;
+    bool containNaN = false;
     jointspaceStates.push_back(initialJointspaceState);
+    //First check whether any point in the trajectory contains NaN
     // convert every taskspace state to a jointspace state
     for (const auto &taskspaceState : taskspaceStates) {
-        jointspaceStates.push_back(taskspace_state_to_jointspace_state(taskspaceState, trajectoryParameters, pilotParameters));
+        if(jointspace_NaN_check(taskspace_state_to_jointspace_state(taskspaceState, trajectoryParameters, pilotParameters))){
+          containNaN = true;
+        }
     }
-
+    //construct the jointspaceStates with respect to whether it contains NaN
+    for (const auto &taskspaceState : taskspaceStates) {
+      if (containNaN == false){
+        jointspaceStates.push_back(taskspace_state_to_jointspace_state(taskspaceState, trajectoryParameters, pilotParameters));
+      }
+      //If any part contains NaN, make all points in jointspaceStates just the initial jointstatespace points
+      else{
+        tempJointspacestate = taskspace_state_to_jointspace_state(taskspaceState, trajectoryParameters, pilotParameters);
+        for(int i = 0; i < tempJointspacestate.q.size(); i++) {
+          tempJointspacestate.q[i] = initialJointspaceState.q[i];
+        }
+        jointspaceStates.push_back(tempJointspacestate);
+      }
+    }
     return jointspaceStates;
 }
 
@@ -1643,6 +1660,19 @@ void AlexTrajectoryGenerator::limit_position_against_angle_boundary(std::vector<
         }
     }
 }
+bool AlexTrajectoryGenerator:jointspace_NaN_check(jointspace_state checkJointspaceState){
+  bool containNaN  = false;
+  //check whether the checkJointspaceState contains NaN
+  for(int i = 0; i < checkJointspaceState.q.size(); i++) {
+    //Flag it if it does contains NaN
+    if(std::isnan(checkJointspaceState.q[i]){
+      containNaN = true;
+    }
+  }
+  //if any one joint returns a NaN, change the whole jointspace state to the original state
+  return containNaN;
+}
+
 
 /*void AlexTrajectoryGenerator::getVelocityAfterPositionCorrection(
     time_tt time, double *robotPositionArray, double *velocityArray) {
