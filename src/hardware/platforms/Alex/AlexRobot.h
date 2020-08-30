@@ -24,9 +24,9 @@
 
 #include "AlexJoint.h"
 #include "AlexTrajectoryGenerator.h"
+#include "Buttons.h"
 #include "CopleyDrive.h"
 #include "Keyboard.h"
-#include "Buttons.h"
 #include "Robot.h"
 #include "RobotParams.h"
 #include "SchneiderDrive.h"
@@ -209,16 +209,25 @@ class AlexRobot : public Robot {
  * \return false 
  */
     bool getResetFlag();
+
+    /**
+    * \brief disable all joints of the robot, returns true if successful
+    * 
+    */
+    bool disableJoints();
+
+#ifdef VIRTUAL
+    /**
+    * \brief Virtual variant to 'moveThroughTraj' function, used to manually set target motor positions when running the exo in simulation
+    * 
+    * \param angle 
+    */
+    void setVirtualPosition(double angle);
+#endif
     /**
     * \todo Move jointMinMap and jointMaxMap to RobotParams.h
     * 
     */
-
-   /**
-    * \brief disable all joints of the robot, returns true if successful
-    * 
-    */
-   bool disableJoints();
     /**
        * \brief Joint Limit Map between Joint value and max Degrees possible
        * \param int Joint value

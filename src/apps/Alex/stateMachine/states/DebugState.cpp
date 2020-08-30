@@ -32,12 +32,14 @@ void DebugState::during(void) {
     }
     if (robot->keyboard.getEnter()) {
         std::cout << " I HAVE HIT ENTER" << std::endl;
+        robot->setVirtualPosition(angle);
     }
     updateCrutch();
     updateFlag();
 }
 
 void DebugState::exit(void) {
+    robot->printStatus();
     std::cout
         << "Debug State Exited" << endl;
 }

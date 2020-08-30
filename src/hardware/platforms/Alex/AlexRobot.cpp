@@ -213,3 +213,11 @@ bool AlexRobot::disableJoints() {
 
     return tmp;
 }
+
+#ifdef VIRTUAL
+void AlexRobot::setVirtualPosition(double angle) {
+    for (auto joint : joints) {
+        ((AlexJoint *)joint)->setPosition(angle);
+    }
+}
+#endif
