@@ -30,6 +30,9 @@ void DebugState::during(void) {
         angle = angle - INCREMENT;
         std::cout << "angle is " << angle << std::endl;
     }
+    if (robot->keyboard.getEnter()) {
+        std::cout << " I HAVE HIT ENTER" << std::endl;
+    }
     updateCrutch();
     updateFlag();
 }
