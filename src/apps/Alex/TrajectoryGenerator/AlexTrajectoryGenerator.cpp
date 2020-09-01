@@ -1322,6 +1322,7 @@ std::vector<jointspace_state> AlexTrajectoryGenerator::taskspace_states_to_joint
     for (const auto &taskspaceState : taskspaceStates) {
         if(jointspace_NaN_check(taskspace_state_to_jointspace_state(taskspaceState, trajectoryParameters, pilotParameters))){
           containNaN = true;
+          DEBUG_OUT("THE TRAJECTORY CONTAINS NAN");
         }
     }
     //construct the jointspaceStates with respect to whether it contains NaN
@@ -1332,7 +1333,7 @@ std::vector<jointspace_state> AlexTrajectoryGenerator::taskspace_states_to_joint
       //If any part contains NaN, make all points in jointspaceStates just the initial jointstatespace points
       else{
         tempJointspacestate = taskspace_state_to_jointspace_state(taskspaceState, trajectoryParameters, pilotParameters);
-        for(int i = 0; i < sizeof(tempJointspacestate.q); i++) {
+        for (int i = 0; i < NUM_JOINTS; i++) {
           tempJointspacestate.q[i] = initialJointspaceState.q[i];
         }
         jointspaceStates.push_back(tempJointspacestate);
@@ -1653,17 +1654,18 @@ void AlexTrajectoryGenerator::limit_position_against_angle_boundary(std::vector<
         if (positions[i] > Q_MIN_MAX[maxIndex]) {
             positions[i] = Q_MIN_MAX[maxIndex];
         }
-        if (std::isnan(positions[i])) {
-            std::cout << "Joint " << i << "ISNAN now " << std::endl;
-            positions[i] = Q_MIN_MAX[minIndex]; /*move to smallest joint angle*/
-            // positions[i] = Q_MIN_MAX[maxIndex] + 10000; why is this +1000 (from old code)
-        }
+        // Got another method to properly dealt with error, so get rid of it right now
+        // if (std::isnan(positions[i])) {
+        //     std::cout << "Joint " << i << "ISNAN now " << std::endl;
+        //     positions[i] = Q_MIN_MAX[minIndex]; /*move to smallest joint angle*/
+        //     // positions[i] = Q_MIN_MAX[maxIndex] + 10000; why is this +1000 (from old code)
+        // }
     }
 }
 bool AlexTrajectoryGenerator::jointspace_NaN_check(jointspace_state checkJointspaceState){
   bool containNaN  = false;
   //check whether the checkJointspaceState contains NaN
-  for(int i = 0; i < sizeof(checkJointspaceState.q); i++) {
+  for (int i = 0; i < NUM_JOINTS; i++){
     //Flag it if it does contains NaN
     if(std::isnan(checkJointspaceState.q[i])) {
       containNaN = true;
