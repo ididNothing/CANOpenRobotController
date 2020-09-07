@@ -6,8 +6,7 @@
 void DebugState::entry(void) {
     std::cout << "Debug State entered" << std::endl
               << "=======================" << std::endl
-              << " + ->> Increase input angle" << std::endl
-              << " - ->> Decrease input angle" << std::endl
+              << " 0-9 ->> Write angle for joints" << std::endl
               << " return ->> Send input angle" << std::endl
               << "=======================" << std::endl
               << std::endl;
@@ -22,18 +21,20 @@ void DebugState::entry(void) {
 }
 
 void DebugState::during(void) {
-    if (robot->keyboard.getPlus()) {
-        angle = angle + INCREMENT;
-        std::cout << "angle is " << angle << std::endl;
-    }
-    if (robot->keyboard.getMinus()) {
-        angle = angle - INCREMENT;
-        std::cout << "angle is " << angle << std::endl;
+    if (robot->keyboard.getNum() != '\0') {
+        angle = 10 * angle + robot->keyboard.getNum() - '0';  // Subtract '0' to convert from ASCII id to value ('0' starts at ASCII 48)
     }
     if (robot->keyboard.getEnter()) {
-        std::cout << " I HAVE HIT ENTER" << std::endl;
+        std::cout << "SENDING " << angle << "degrees TO JOINTS" << std::endl;
         robot->setVirtualPosition(angle);
+        angle = 0;  // reset angle
+        std::cout
+            << "=======================" << std::endl
+            << " 0-9 ->> Write angle for joints" << std::endl
+            << " return ->> Send input angle" << std::endl
+            << "=======================" << std::endl;
     }
+
     updateCrutch();
     updateFlag();
 }

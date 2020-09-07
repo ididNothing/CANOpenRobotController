@@ -47,8 +47,8 @@ typedef struct keys {
  */
 class Keyboard : public InputDevice {
    private:
-    key_states lastKeyStates = {false, false, false, false, false, false, false, false, false, false, false, ''};
-    key_states currentKeyStates = {false, false, false, false, false, false, false, false, false, false, false, ''};
+    key_states lastKeyStates = {false, false, false, false, false, false, false, false, false, false, false, '\0'};
+    key_states currentKeyStates = {false, false, false, false, false, false, false, false, false, false, false, '\0'};
     int keyboardActive;
 
    public:
@@ -129,22 +129,22 @@ class Keyboard : public InputDevice {
  */
     bool getR();
     /**
- * \brief Getter method for private R key state
+ * \brief Getter method for private Plus key state
  * 
  */
     bool getPlus();
     /**
- * \brief Getter method for private R key state
+ * \brief Getter method for private Minus key state
  * 
  */
     bool getMinus();
     /**
- * \brief Getter method for private R key state
+ * \brief Getter method for private Enter key state
  * 
  */
     bool getEnter();
     /**
- * \brief Getter method for private R key state
+ * \brief Getter method for private Number key state
  * 
  */
     char getNum();

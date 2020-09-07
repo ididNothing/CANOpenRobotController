@@ -160,7 +160,7 @@ void Keyboard::clearCurrentStates() {
     currentKeyStates.plus = false;
     currentKeyStates.minus = false;
     currentKeyStates.enter = false;
-    currentKeyStates.number = NULL;
+    currentKeyStates.number = '\0';
 }
 bool Keyboard::getA() {
     return currentKeyStates.a;

@@ -26,7 +26,8 @@ class DebugState : public ExoTestState {
     double angle = 0;
 
    public:
-    void entry(void);
+    void
+    entry(void);
     void during(void);
     void exit(void);
     DebugState(StateMachine *m, AlexRobot *exo, AlexTrajectoryGenerator *tg, const char *name = NULL) : ExoTestState(m, exo, tg, name){};
