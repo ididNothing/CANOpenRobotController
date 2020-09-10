@@ -21,7 +21,7 @@ void DebugState::entry(void) {
 }
 
 void DebugState::during(void) {
-    if (robot->keyboard.getNum() != '\0') {
+    if (robot->keyboard.getNum() != '\0') {                   // Append the pressed number to angle value (shift current number left: x10, then add new number)
         angle = 10 * angle + robot->keyboard.getNum() - '0';  // Subtract '0' to convert from ASCII id to value ('0' starts at ASCII 48)
     }
     if (robot->keyboard.getEnter()) {
