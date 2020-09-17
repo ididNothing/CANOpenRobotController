@@ -109,7 +109,7 @@ typedef domain_t CO_DOMAIN;
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-#define CO_OD_NoOfElements 254
+#define CO_OD_NoOfElements 254  // Justin: probably need to change this when adding PDOs (need to add another struct)
 
 /*******************************************************************************
    TYPE DEFINITIONS FOR RECORDS
@@ -191,7 +191,7 @@ typedef domain_t CO_DOMAIN;
     UNSIGNED64 epochTimeBaseMs;
     UNSIGNED32 epochTimeOffsetMs;
 } OD_time_t;
-/*2209    */ typedef struct
+/*2209    */ typedef struct  // Justin: this sets up the memory addresses for the temp data, still need to set up the receive PDOs (and send PDOs from the drive side)
 {
     UNSIGNED8 numberOfMotors;
     UNSIGNED16 motor1;

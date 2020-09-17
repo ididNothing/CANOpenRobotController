@@ -19,7 +19,9 @@ MODULES   := core/CANopen/CANopenNode core/CANopen/CANopenNode/stack core/CANope
 			 core core/CANopen/CANcomms core/CANopen/objDict core/robot core/robot/joint core/stateMachine core/TrajectoryGenerator \
 			 hardware/drives hardware/IO hardware/platforms/Alex hardware/platforms/Alex/joints \
 			 apps/Alex apps/Alex/stateMachine apps/Alex/stateMachine/states apps/Alex/TrajectoryGenerator \
-			 libs/Eigen
+			 libs/Eigen \
+			 spdlog/include 
+			#  spdlog/include/spdlog spdlog/include/spdlog/cfg spdlog/include/spdlog/details spdlog/include/spdlog/fmt spdlog/include/spdlog/sinks 
 
 # automatically create list of module file paths NOT including executables
 SRC_DIR	  := $(addprefix src/,$(MODULES))

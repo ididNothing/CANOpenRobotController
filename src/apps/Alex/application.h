@@ -46,6 +46,7 @@
 #include <unistd.h>
 // Simple logging
 
+#include "AlexJoint.h"
 #include "AlexMachine.h"
 #include "AlexRobot.h"
 #include "CANopen.h"
@@ -54,6 +55,10 @@
 #include "CO_command.h"
 #include "CO_time.h"
 #include "stdio.h"
+
+// Header file to enable logging features with spdlog
+#include "spdlog/sinks/basic_file_sink.h"
+#include "spdlog/spdlog.h"
 
 #ifndef CO_APPLICATION_H
 #define CO_APPLICATION_H
@@ -80,7 +85,7 @@ void app_communicationReset(void);
 void app_programEnd(void);
 
 /**
- * \briefFunction is called cyclically from main.
+ * \brief Function is called cyclically from main.
  *
  * \param timer1msDiff Time difference since last call
  */
@@ -92,5 +97,20 @@ void app_programAsync(uint16_t timer1msDiff);
  * Code inside this function must be executed fast. Take care on race conditions.
  */
 void app_programControlLoop(void);
+
+/**
+ * \brief Function to log motor drive data at a rate determined by the control loop.
+ * 
+ */
+void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger);
+
+/**
+ * \brief Create a Logger object that writes the data to the designated file.
+ * 
+ * @param logID 
+ * @param fileLocation 
+ * @return std::shared_ptr<spdlog::logger> 
+ */
+std::shared_ptr<spdlog::logger> createLogger(std::string logID, std::string fileLocation);
 
 #endif /*APP_H*/
