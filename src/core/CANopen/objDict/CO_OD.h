@@ -2255,12 +2255,12 @@ typedef domain_t CO_DOMAIN;
 #define OD_2202_motorAmpTemperatures 0x2202
 
 #define OD_2202_0_motorAmpTemperatures_numMotors 0
-#define OD_2202_1_motorAmpTemperatures_motor1 0
-#define OD_2202_2_motorAmpTemperatures_motor2 0
-#define OD_2202_3_motorAmpTemperatures_motor3 0
-#define OD_2202_4_motorAmpTemperatures_motor4 0
-#define OD_2202_5_motorAmpTemperatures_motor5 0
-#define OD_2202_6_motorAmpTemperatures_motor6 0
+#define OD_2202_1_motorAmpTemperatures_motor1 1
+#define OD_2202_2_motorAmpTemperatures_motor2 2
+#define OD_2202_3_motorAmpTemperatures_motor3 3
+#define OD_2202_4_motorAmpTemperatures_motor4 4
+#define OD_2202_5_motorAmpTemperatures_motor5 5
+#define OD_2202_6_motorAmpTemperatures_motor6 6
 
 /*2209 */
 #define OD_2209_motorTempSensorVoltages 0x2209

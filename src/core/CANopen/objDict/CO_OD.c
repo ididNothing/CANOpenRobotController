@@ -117,12 +117,12 @@ struct sCO_OD_RAM CO_OD_RAM = {
               /*1410*/ {0x2L, 0x0191L, 0xfeL},  // Crutch parameters
               /*1411*/ {0x2L, 0x0192L, 0xfeL},  // Crutch parameters
               /*1412*/ {0x2L, 0x0193L, 0xfeL},  // Crutch parameters
-              /*1420*/ {0x2L, 0x0481L, 0xfeL},  // Copley Drive motor1 amplifier temps
-              /*1421*/ {0x2L, 0x0482L, 0xfeL},  // Copley Drive motor2 amplifier temps
-              /*1422*/ {0x2L, 0x0483L, 0xfeL},  // Copley Drive motor3 amplifier temps
-              /*1423*/ {0x2L, 0x0484L, 0xfeL},  // Copley Drive motor4 amplifier temps
-              /*1424*/ {0x2L, 0x0485L, 0xfeL},  // Schneider Drive motor5 amplifier temps
-              /*1425*/ {0x2L, 0x0486L, 0xfeL},  // Schneider Drive motor6 amplifier temps
+              /*1413*/ {0x2L, 0x0481L, 0xfeL},  // Copley Drive motor1 amplifier temps
+              /*1414*/ {0x2L, 0x0482L, 0xfeL},  // Copley Drive motor2 amplifier temps
+              /*1415*/ {0x2L, 0x0483L, 0xfeL},  // Copley Drive motor3 amplifier temps
+              /*1416*/ {0x2L, 0x0484L, 0xfeL},  // Copley Drive motor4 amplifier temps
+              /*1417*/ {0x2L, 0x0485L, 0xfeL},  // Schneider Drive motor5 amplifier temps
+              /*1418*/ {0x2L, 0x0486L, 0xfeL},  // Schneider Drive motor6 amplifier temps
               /*1419*/ {0x2L, 0x80000000L, 0xfeL},
               /*141a*/ {0x2L, 0x80000000L, 0xfeL},
               /*141b*/ {0x2L, 0x80000000L, 0xfeL},
@@ -2636,7 +2636,7 @@ extern const CO_OD_entry_t CO_OD[CO_OD_NoOfElements] = {
     {0x2112, 0x10, 0x8e, 4, (void *)&CO_OD_RAM.variableNV_Int32[0]},
     {0x2120, 0x05, 0x00, 0, (void *)&OD_record2120},
     {0x2130, 0x03, 0x00, 0, (void *)&OD_record2130},
-    {0x2202, 0x06, 0x00, 0, (void *)&CO_OD_RAM.motorAmpTemperatures},
+    {0x2202, 0x06, 0x00, 0, (void *)&OD_motorAmpTemperatures},
     {0x2209, 0x06, 0x00, 0, (void *)&OD_record2209},
     {0x2301, 0x08, 0x00, 0, (void *)&OD_record2301},
     {0x2302, 0x08, 0x00, 0, (void *)&OD_record2302},
