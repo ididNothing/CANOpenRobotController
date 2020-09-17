@@ -54,9 +54,10 @@ std::shared_ptr<spdlog::logger> createLogger(std::string logID, std::string file
     try {
         auto logger = spdlog::basic_logger_mt(logID, fileLocation);
         // setLoggerStyle(logger);
-        logger->set_pattern("%v");
+        // logger->set_pattern("%v");
+        logger->set_pattern("%H:%M:%S %z, %v, %v, %v, %v");
         return logger;
-    } catch (const spdlog::spdlog_ex &ex) {
+    } catch (const spdlog::spdlog_ex& ex) {
         std::cout << "Failed to create log: " << ex.what() << std::endl;
     }
 }
@@ -75,10 +76,12 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger) {
     // motorpos[2] = CO_OD_RAM.actualMotorPositions.motor3;
     // motorpos[3] = CO_OD_RAM.actualMotorPositions.motor4;
 
-    motorpos[0] = CO_OD_RAM.actualMotorPositions.motor1;
-    motorpos[1] = CO_OD_RAM.actualMotorPositions.motor2;
-    motorpos[2] = CO_OD_RAM.actualMotorPositions.motor3;
-    motorpos[3] = CO_OD_RAM.actualMotorPositions.motor4;
+    double* jointVals = alexM.updateJoints();
+
+    motorpos[0] = jointVals[0];
+    motorpos[1] = jointVals[1];
+    motorpos[2] = jointVals[2];
+    motorpos[3] = jointVals[3];
 
     motorTor[0] = CO_OD_RAM.statusWords.motor1;
     motorTor[1] = CO_OD_RAM.statusWords.motor2;
@@ -91,12 +94,14 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger) {
     long long timesec = tv.tv_sec;
     long timeusec = tv.tv_usec;
 
-    logger->info("{}", timesec);
-    logger->info("{}", timeusec);
+    logger->info("{}", timesec, timeusec, motorpos[0], motorpos[1], motorpos[2], motorpos[3]);
 
-    for (int i = 0; i < 4; i++) {
-        mainLogger->info("{}", motorpos[i]);
-        mainLogger->info("{}", motorTor[i]);
-        // mainLogger->info("{}", testInts[i]);
-    }
+    // logger->info("{}", timesec);
+    // logger->info("{}", timeusec);
+
+    // for (int i = 0; i < 4; i++) {
+    //     mainLogger->info("{}", motorpos[i]);
+    //     mainLogger->info("{}", motorTor[i]);
+    //     // mainLogger->info("{}", testInts[i]);
+    // }
 }

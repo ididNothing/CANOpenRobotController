@@ -24,9 +24,9 @@
 
 #include "AlexJoint.h"
 #include "AlexTrajectoryGenerator.h"
+#include "Buttons.h"
 #include "CopleyDrive.h"
 #include "Keyboard.h"
-#include "Buttons.h"
 #include "Robot.h"
 #include "RobotParams.h"
 #include "SchneiderDrive.h"
@@ -214,16 +214,24 @@ class AlexRobot : public Robot {
     * 
     */
 
-   /**
+    /**
     * \brief disable all joints of the robot, returns true if successful
     * 
     */
-   bool disableJoints();
+    bool disableJoints();
+
     /**
-       * \brief Joint Limit Map between Joint value and max Degrees possible
-       * \param int Joint value
-       * \return int maxDeg 
-       */
+    * \brief return the positions values of the joints of the robot
+    * 
+    * @return double* 
+    */
+    double *readJoints(void);
+
+    /**
+    * \brief Joint Limit Map between Joint value and max Degrees possible
+    * \param int Joint value
+    * \return int maxDeg 
+    */
     std::map<int, double> jointMinMap = {{LEFT_HIP, 70},
                                          {LEFT_KNEE, 0},
                                          {RIGHT_HIP, 70},
