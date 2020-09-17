@@ -5,9 +5,11 @@
 
 void Standing::entry(void) {
     std::cout << "Standing State Entered " << std::endl
+#ifdef KEYBOARD
               << "=======================" << std::endl
               << " A ->> sit down" << std::endl
               << " S ->> start Walk" << std::endl
+#endif
               << "=======================" << std::endl
               << std::endl;
     robot->setCurrentState(AlexState::Standing);

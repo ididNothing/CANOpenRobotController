@@ -109,7 +109,7 @@ typedef domain_t CO_DOMAIN;
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-#define CO_OD_NoOfElements 254  // Justin: probably need to change this when adding PDOs (need to add another struct)
+#define CO_OD_NoOfElements 255
 
 /*******************************************************************************
    TYPE DEFINITIONS FOR RECORDS
@@ -191,7 +191,17 @@ typedef domain_t CO_DOMAIN;
     UNSIGNED64 epochTimeBaseMs;
     UNSIGNED32 epochTimeOffsetMs;
 } OD_time_t;
-/*2209    */ typedef struct  // Justin: this sets up the memory addresses for the temp data, still need to set up the receive PDOs (and send PDOs from the drive side)
+/*2202    */ typedef struct
+{
+    UNSIGNED8 numberOfMotors;
+    UNSIGNED16 motor1;
+    UNSIGNED16 motor2;
+    UNSIGNED16 motor3;
+    UNSIGNED16 motor4;
+    UNSIGNED16 motor5;
+    UNSIGNED16 motor6;
+} OD_motorAmpTemperatures_t;
+/*2209    */ typedef struct
 {
     UNSIGNED8 numberOfMotors;
     UNSIGNED16 motor1;
@@ -2241,6 +2251,17 @@ typedef domain_t CO_DOMAIN;
 #define OD_2130_2_time_epochTimeBaseMs 2
 #define OD_2130_3_time_epochTimeOffsetMs 3
 
+/*2202 */
+#define OD_2202_motorAmpTemperatures 0x2202
+
+#define OD_2202_0_motorAmpTemperatures_numMotors 0
+#define OD_2202_1_motorAmpTemperatures_motor1 1
+#define OD_2202_2_motorAmpTemperatures_motor2 2
+#define OD_2202_3_motorAmpTemperatures_motor3 3
+#define OD_2202_4_motorAmpTemperatures_motor4 4
+#define OD_2202_5_motorAmpTemperatures_motor5 5
+#define OD_2202_6_motorAmpTemperatures_motor6 6
+
 /*2209 */
 #define OD_2209_motorTempSensorVoltages 0x2209
 
@@ -3242,6 +3263,7 @@ struct sCO_OD_RAM {
     /*2112      */ INTEGER32 variableNV_Int32[16];
     /*2120      */ OD_testVar_t testVar;
     /*2130      */ OD_time_t time;
+    /*2202      */ OD_motorAmpTemperatures_t motorAmpTemperatures;
     /*2209      */ OD_motorTempSensorVoltages_t motorTempSensorVoltages;
     /*2301      */ OD_traceConfig_t traceConfig[32];
     /*2400      */ UNSIGNED8 traceEnable;
@@ -3463,6 +3485,9 @@ extern struct sCO_OD_EEPROM CO_OD_EEPROM;
 
 /*2130, Data Type: time_t */
 #define OD_time CO_OD_RAM.time
+
+/*2202, Data Type: motorAmpTemperatures_t */
+#define OD_motorAmpTemperatures CO_OD_RAM.motorAmpTemperatures
 
 /*2209, Data Type: motorTempSensorVoltages_t */
 #define OD_motorTempSensorVoltages CO_OD_RAM.motorTempSensorVoltages

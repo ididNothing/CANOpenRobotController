@@ -49,13 +49,15 @@ enum DriveState {
  * 
  */
 enum OD_Entry_t {
-    STATUS_WORD = 0, /**< 0 */
-    ACTUAL_POS = 1,  /**< 1 */
-    ACTUAL_VEL = 2,  /**< 2 */
-    ACTUAL_TOR = 3,  /**< 3 */
-    TARGET_POS = 11, /**< 11 */
-    TARGET_VEL = 12, /**< 12 */
-    TARGET_TOR = 13  /**< 13 */
+    STATUS_WORD = 0,          /**< 0 */
+    ACTUAL_POS = 1,           /**< 1 */
+    ACTUAL_VEL = 2,           /**< 2 */
+    ACTUAL_TOR = 3,           /**< 3 */
+    TARGET_POS = 11,          /**< 11 */
+    TARGET_VEL = 12,          /**< 12 */
+    TARGET_TOR = 13,          /**< 13 */
+    MOTOR_TEMP_SCHNEIDER = 4, /**< 4 */
+    MOTOR_TEMP_COPLEY = 5     /**< 5 */
 };
 
 /**
@@ -72,7 +74,9 @@ static std::map<OD_Entry_t, int> OD_Addresses = {
     {ACTUAL_TOR, 0x6077},
     {TARGET_POS, 0x607A},
     {TARGET_VEL, 0x60FF},
-    {TARGET_TOR, 0x6071}};
+    {TARGET_TOR, 0x6071},
+    {MOTOR_TEMP_SCHNEIDER, 0x2018},
+    {MOTOR_TEMP_COPLEY, 0x2202}};
 
 /**
  * \brief Map between commonly-used Object Dictionary (OD) entries and their respective data lengths

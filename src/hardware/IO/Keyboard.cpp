@@ -75,6 +75,21 @@ void Keyboard::setKeys() {
         case '-':
             currentKeyStates.minus = true;
             break;
+        case '\n':
+            currentKeyStates.enter = true;
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            currentKeyStates.number = ch;
+            break;
         default:
             keyboardActive = 0;
     }
@@ -84,7 +99,8 @@ key_states Keyboard::getStates() {
                                 this->currentKeyStates.d, this->currentKeyStates.w,
                                 this->currentKeyStates.x, this->currentKeyStates.x,
                                 this->currentKeyStates.e, this->currentKeyStates.r,
-                                this->currentKeyStates.plus, this->currentKeyStates.minus};
+                                this->currentKeyStates.plus, this->currentKeyStates.minus,
+                                this->currentKeyStates.enter, this->currentKeyStates.number};
     return current_state;
 };
 void Keyboard::printPressed() {
@@ -124,6 +140,14 @@ void Keyboard::printPressed() {
         std::cout
             << "PRESSED MINUS " << std::endl;
     }
+    if (getEnter()) {
+        std::cout
+            << "PRESSED ENTER " << std::endl;
+    }
+    if (getNum()) {
+        std::cout
+            << "PRESSED A NUMBER " << std::endl;
+    }
 }
 void Keyboard::clearCurrentStates() {
     currentKeyStates.a = false;
@@ -135,6 +159,8 @@ void Keyboard::clearCurrentStates() {
     currentKeyStates.r = false;
     currentKeyStates.plus = false;
     currentKeyStates.minus = false;
+    currentKeyStates.enter = false;
+    currentKeyStates.number = '\0';
 }
 bool Keyboard::getA() {
     return currentKeyStates.a;
@@ -166,6 +192,12 @@ bool Keyboard::getPlus() {
 };
 bool Keyboard::getMinus() {
     return currentKeyStates.minus;
+}
+bool Keyboard::getEnter() {
+    return currentKeyStates.enter;
+}
+char Keyboard::getNum() {
+    return currentKeyStates.number;
 }
 int Keyboard::kbhit() {
     struct timeval tv;

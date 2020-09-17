@@ -4,8 +4,10 @@
 #include "Sitting.h"
 void Sitting::entry() {
     std::cout << "Sitting State Entered " << std::endl
+#ifdef KEYBOARD
               << "=======================" << std::endl
-              << " HIT A to begin standing up" << std::endl
+              << " A ->> Stand up" << std::endl
+#endif
               << "=======================" << std::endl
               << std::endl;
     robot->setCurrentState(AlexState::Sitting);

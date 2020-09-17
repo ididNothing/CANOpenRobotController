@@ -35,10 +35,10 @@ setMovementReturnCode_t AlexJoint::setPosition(double desQ) {
     // for testing w/o Robot
     lastQCommand = desQ;
     if (desQ > qMax) {
-        DEBUG_OUT("Joint" << this->id << " COMMAND:" << desQ << " OUTSIDE OF MAXQ")
+        DEBUG_OUT("Joint " << this->id << " COMMAND: " << desQ << " OUTSIDE OF MAXQ")
         desQ = qMax;
     } else if (desQ < qMin) {
-        DEBUG_OUT("Joint" << this->id << " COMMAND:" << desQ << " OUTSIDE OF MINQ")
+        DEBUG_OUT("Joint " << this->id << " COMMAND: " << desQ << " OUTSIDE OF MINQ")
         desQ = qMin;
     }
     return ActuatedJoint::setPosition(desQ);

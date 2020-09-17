@@ -209,10 +209,6 @@ class AlexRobot : public Robot {
  * \return false 
  */
     bool getResetFlag();
-    /**
-    * \todo Move jointMinMap and jointMaxMap to RobotParams.h
-    * 
-    */
 
     /**
     * \brief disable all joints of the robot, returns true if successful
@@ -220,18 +216,23 @@ class AlexRobot : public Robot {
     */
     bool disableJoints();
 
+#ifdef VIRTUAL
     /**
-    * \brief return the positions values of the joints of the robot
+    * \brief Virtual variant to 'moveThroughTraj' function, used to manually set target motor positions when running the exo in simulation
     * 
-    * @return double* 
+    * \param angle 
     */
-    double *readJoints(void);
-
+    void setVirtualPosition(double angle);
+#endif
     /**
-    * \brief Joint Limit Map between Joint value and max Degrees possible
-    * \param int Joint value
-    * \return int maxDeg 
+    * \todo Move jointMinMap and jointMaxMap to RobotParams.h
+    * 
     */
+    /**
+       * \brief Joint Limit Map between Joint value and max Degrees possible
+       * \param int Joint value
+       * \return int maxDeg 
+       */
     std::map<int, double> jointMinMap = {{LEFT_HIP, 70},
                                          {LEFT_KNEE, 0},
                                          {RIGHT_HIP, 70},

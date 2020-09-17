@@ -8,6 +8,12 @@ void SteppingLeftStair::entry(void) {
     trajectoryGenerator->initialiseTrajectory(RobotMode::UPSTAIR, robot->getJointStates());
     robot->startNewTraj();
     robot->setCurrentState(AlexState::StepL);
+#ifdef VIRTUAL
+    std::cout
+        << "==================" << endl
+        << " W ->> Complete trajectory" << endl
+        << "==================" << endl;
+#endif
 }
 void SteppingLeftStair::during(void) {
     robot->moveThroughTraj();

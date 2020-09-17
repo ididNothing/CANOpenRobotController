@@ -19,6 +19,13 @@ bool CopleyDrive::Init() {
     return false;
 }
 
+bool CopleyDrive::initPDOs() {
+    Drive::initPDOs();
+
+    DEBUG_OUT("Set up MOTOR_TEMP TPDO on Copley")
+    sendSDOMessages(generateTPDOConfigSDO({MOTOR_TEMP_COPLEY}, 4, 1));
+}
+
 bool CopleyDrive::initPosControl(motorProfile posControlMotorProfile) {
     DEBUG_OUT("NodeID " << NodeID << " Initialising Position Control")
 /*Catch SDO msg set up for real robot here*/
