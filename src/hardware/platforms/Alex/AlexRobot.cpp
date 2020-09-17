@@ -101,18 +101,18 @@ bool AlexRobot::moveThroughTraj() {
 }
 
 bool AlexRobot::initialiseJoints() {
-    JointKnownPos hipParam{250880, 0, 90, 180};
-    JointKnownPos kneeParam{250880, 0, 90, 0};
-    JointKnownPos ankleParam{0, -800000, 90, 115};
+    JointKnownPos hipParam{HIP_MOTOR_POS1, HIP_MOTOR_POS2, HIP_MOTOR_DEG1, HIP_MOTOR_DEG2};
+    JointKnownPos kneeParam{KNEE_MOTOR_POS1, KNEE_MOTOR_POS2, KNEE_MOTOR_DEG1, KNEE_MOTOR_DEG2};
+    JointKnownPos ankleParam{ANKLE_MOTOR_POS1, ANKLE_MOTOR_POS2, ANKLE_MOTOR_DEG1, ANKLE_MOTOR_DEG2};
 
-    for (int id = 0; id < 4; id++) {
+    for (int id = 0; id < NUM_JOINTS; id++) {
         if (id == LEFT_HIP || id == RIGHT_HIP) {
             Drives.push_back(new CopleyDrive(id + 1));
             joints.push_back(new AlexJoint(id, jointMinMap[id], jointMaxMap[id], Drives[id], hipParam));
         } else if (id == LEFT_KNEE || id == RIGHT_KNEE) {
             Drives.push_back(new CopleyDrive(id + 1));
             joints.push_back(new AlexJoint(id, jointMinMap[id], jointMaxMap[id], Drives[id], kneeParam));
-        } else {  // is an ankle  ->  CHANGE DRIVE to Ankle drives NOT COPLEY
+        } else {  // is an ankle  ->  CHANGE DRIVE to Schneider drives NOT COPLEY
             Drives.push_back(new SchneiderDrive(id + 1));
             joints.push_back(new AlexJoint(id, jointMinMap[id], jointMaxMap[id], Drives[id], ankleParam));
         }

@@ -56,6 +56,9 @@ bool SchneiderDrive::initPDOs() {
     DEBUG_OUT("Set up ACTUAL_POS and ACTUAL_VEL TPDO")
     sendSDOMessages(generateTPDOConfigSDO({ACTUAL_POS, ACTUAL_VEL}, 2, 1));
 
+    DEBUG_OUT("Set up MOTOR_TEMP TPDO")
+    sendSDOMessages(generateTPDOConfigSDO({MOTOR_TEMP_SCHNEIDER}, 4, 1));
+
     DEBUG_OUT("Set up TARGET_POS RPDO")
     sendSDOMessages(generateRPDOConfigSDO({TARGET_POS}, 3, 0xff));
 

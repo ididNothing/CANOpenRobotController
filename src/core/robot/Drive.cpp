@@ -114,6 +114,9 @@ bool Drive::initPDOs() {
     DEBUG_OUT("Set up ACTUAL_TOR TPDO")
     sendSDOMessages(generateTPDOConfigSDO({ACTUAL_TOR}, 3, 1));
 
+    DEBUG_OUT("Set up MOTOR_TEMP TPDO")
+    sendSDOMessages(generateTPDOConfigSDO({MOTOR_TEMP_COPLEY}, 4, 1));
+
     DEBUG_OUT("Set up TARGET_POS RPDO")
     sendSDOMessages(generateRPDOConfigSDO({TARGET_POS}, 3, 0xff));
 
