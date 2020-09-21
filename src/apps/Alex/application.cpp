@@ -78,10 +78,14 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger) {
 
     double* jointVals = alexM.updateJoints();
 
-    motorpos[0] = jointVals[0];
-    motorpos[1] = jointVals[1];
-    motorpos[2] = jointVals[2];
-    motorpos[3] = jointVals[3];
+    if (sizeof(jointVals) > 3) {
+        motorpos[0] = jointVals[0];
+        motorpos[1] = jointVals[1];
+        motorpos[2] = jointVals[2];
+        motorpos[3] = jointVals[3];
+    } else {
+        std::cout << "Not enough elements in jointVals!";
+    }
 
     motorTor[0] = CO_OD_RAM.statusWords.motor1;
     motorTor[1] = CO_OD_RAM.statusWords.motor2;

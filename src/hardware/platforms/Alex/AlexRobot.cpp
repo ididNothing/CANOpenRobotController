@@ -221,3 +221,14 @@ void AlexRobot::setVirtualPosition(double angle) {
     }
 }
 #endif
+
+double *AlexRobot::readJoints(void) {
+    static double jointVals[4];
+    int i = 0;
+    for (auto p : joints) {
+        jointVals[i] = ((AlexJoint *)p)->getQ();
+        i++;
+    }
+
+    return jointVals;
+}
