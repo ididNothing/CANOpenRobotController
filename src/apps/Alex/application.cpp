@@ -76,16 +76,30 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger) {
     // motorpos[2] = CO_OD_RAM.actualMotorPositions.motor3;
     // motorpos[3] = CO_OD_RAM.actualMotorPositions.motor4;
 
-    double* jointVals = alexM.updateJoints();
+    // double* jointVals = alexM.updateJoints();
 
-    if (sizeof(jointVals) > 3) {
-        motorpos[0] = jointVals[0];
-        motorpos[1] = jointVals[1];
-        motorpos[2] = jointVals[2];
-        motorpos[3] = jointVals[3];
-    } else {
-        std::cout << "Not enough elements in jointVals!";
-    }
+    // if (sizeof(jointVals) > 3) {
+    //     motorpos[0] = jointVals[0];
+    //     motorpos[1] = jointVals[1];
+    //     motorpos[2] = jointVals[2];
+    //     motorpos[3] = jointVals[3];
+    // } else {
+    //     std::cout << "Not enough elements in jointVals!";
+    // }
+
+#ifdef VIRTUAL
+    motorpos[0] = CO_OD_RAM.targetMotorPositions.motor1;
+    motorpos[1] = CO_OD_RAM.targetMotorPositions.motor2;
+    motorpos[2] = CO_OD_RAM.targetMotorPositions.motor3;
+    motorpos[3] = CO_OD_RAM.targetMotorPositions.motor4;
+#endif
+
+#ifndef VIRTUAL
+    motorpos[0] = CO_OD_RAM.actualMotorPositions.motor1;
+    motorpos[1] = CO_OD_RAM.actualMotorPositions.motor2;
+    motorpos[2] = CO_OD_RAM.actualMotorPositions.motor3;
+    motorpos[3] = CO_OD_RAM.actualMotorPositions.motor4;
+#endif
 
     motorTor[0] = CO_OD_RAM.statusWords.motor1;
     motorTor[1] = CO_OD_RAM.statusWords.motor2;
