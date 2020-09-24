@@ -5,15 +5,15 @@ void SteppingLeftStairDown::entry(void) {
         << "==================" << endl
         << " Stepping Left Stair Down" << endl
         << "==================" << endl;
-    trajectoryGenerator->initialiseTrajectory(RobotMode::DWNSTAIR, robot->getJointStates());
-    robot->startNewTraj();
-    robot->setCurrentState(AlexState::BackStepL);
 #ifdef VIRTUAL
     std::cout
         << "==================" << endl
         << " W ->> Complete trajectory" << endl
         << "==================" << endl;
 #endif
+    trajectoryGenerator->initialiseTrajectory(RobotMode::DWNSTAIR, robot->getJointStates());
+    robot->startNewTraj();
+    robot->setCurrentState(AlexState::BackStepL);
 }
 void SteppingLeftStairDown::during(void) {
     robot->moveThroughTraj();

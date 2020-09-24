@@ -7,15 +7,15 @@ void SittingDwn::entry(void) {
               << "===================" << endl
               << " TRIGGER -> SIT DOWN " << endl
               << "===================" << endl;
-    trajectoryGenerator->initialiseTrajectory(RobotMode::SITDWN, robot->getJointStates());
-    robot->startNewTraj();
-    robot->setCurrentState(AlexState::SittingDown);
 #ifdef VIRTUAL
     std::cout
         << "==================" << endl
         << " W ->> Complete trajectory" << endl
         << "==================" << endl;
 #endif
+    trajectoryGenerator->initialiseTrajectory(RobotMode::SITDWN, robot->getJointStates());
+    robot->startNewTraj();
+    robot->setCurrentState(AlexState::SittingDown);
 }
 void SittingDwn::during(void) {
     // w/o crutch Go button
