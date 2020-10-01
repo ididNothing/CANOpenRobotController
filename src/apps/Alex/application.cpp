@@ -15,6 +15,8 @@ char buf[STRING_BUFFER_SIZE];
 char ret[STRING_BUFFER_SIZE];
 AlexMachine alexM;
 
+time_t timer;
+
 // Create pointer to logger object
 std::shared_ptr<spdlog::logger> mainLogger;
 
@@ -30,6 +32,10 @@ void app_programStart(void) {
 
     // Create csv file (not using spdlog)
     // std::ofstream myLog("my_app_log.csv");
+
+    // Record start time
+    // time_t timer;
+    // time_t start_tm = time(&timer);
 }
 /******************************************************************************/
 void app_communicationReset(void) {
@@ -54,12 +60,34 @@ void app_programControlLoop(void) {
     // My logger test
     std::ofstream myLog("my_app_log.csv", std::ios::app);
 
+    uint32_t motorpos[4];
+    uint16_t motorTor[4];
+
+#ifdef VIRTUAL
+    motorpos[0] = CO_OD_RAM.targetMotorPositions.motor1;
+    motorpos[1] = CO_OD_RAM.targetMotorPositions.motor2;
+    motorpos[2] = CO_OD_RAM.targetMotorPositions.motor3;
+    motorpos[3] = CO_OD_RAM.targetMotorPositions.motor4;
+#endif
+
+#ifndef VIRTUAL
+    motorpos[0] = CO_OD_RAM.actualMotorPositions.motor1;
+    motorpos[1] = CO_OD_RAM.actualMotorPositions.motor2;
+    motorpos[2] = CO_OD_RAM.actualMotorPositions.motor3;
+    motorpos[3] = CO_OD_RAM.actualMotorPositions.motor4;
+#endif
+
     int testInts[4] = {1, 2, 3, 4};
 
-    myLog << testInts[0] << ",";
-    myLog << testInts[1] << ",";
-    myLog << testInts[2] << ",";
-    myLog << testInts[3] << "\n";
+    // Time
+    time_t curr_tm = time(NULL);
+    // double curr_tm = difftime(time(&timer), start_tm);
+    myLog << asctime(localtime(&curr_tm)) << ",";  // Need to remove \n
+
+    myLog << motorpos[0] << ",";
+    myLog << motorpos[1] << ",";
+    myLog << motorpos[2] << ",";
+    myLog << motorpos[3] << "\n";
 
     myLog.close();
 }
@@ -83,8 +111,6 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger) {
 
     uint32_t motorpos[4];
     uint16_t motorTor[4];
-
-    // Want to change these to getPos() instead, need to check which file that function is in (I think its drive.cpp)
 
     // motorpos[0] = CO_OD_RAM.actualMotorPositions.motor1;
     // motorpos[1] = CO_OD_RAM.actualMotorPositions.motor2;
