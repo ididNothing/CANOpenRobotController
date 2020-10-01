@@ -277,8 +277,3 @@ bool AlexMachine::DebugTransition::check(void) {
 void AlexMachine::hwStateUpdate(void) {
     robot->updateRobot();
 }
-
-// ADD FUNCTION TO CALL AlexRobot FUNCTION TO PASS BACK JOINT POSITIONS BY CALLING getQ() ON EACH JOINT
-double* AlexMachine::updateJoints(void) {
-    return (robot->readJoints());
-}

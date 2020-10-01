@@ -87,14 +87,7 @@ class AlexMachine : public StateMachine {
     bool trajComplete;
     AlexTrajectoryGenerator* trajectoryGenerator;
 
-    /**
-     * \brief calls function to read and return the values of the joints
-     * 
-     * @return double* 
-     */
-    double* updateJoints(void);
-
-    /**
+     /**
      * Pointers to the relevant states - initialised in init
      *
      */

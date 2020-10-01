@@ -225,12 +225,6 @@ class AlexRobot : public Robot {
     void setVirtualPosition(double angle);
 #endif
 
-    /** 
-    * \brief return the positions values of the joints of the robot *
-    * @return double *
-    */
-    double *readJoints(void);
-
     /**
     * \todo Move jointMinMap and jointMaxMap to RobotParams.h
     * 

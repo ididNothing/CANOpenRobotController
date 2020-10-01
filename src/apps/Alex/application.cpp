@@ -27,6 +27,9 @@ void app_programStart(void) {
     // Create the logger object
     mainLogger = createLogger("parent", "application_log.csv");
     spdlog::set_default_logger(mainLogger);
+
+    // Create csv file (not using spdlog)
+    // std::ofstream myLog("my_app_log.csv");
 }
 /******************************************************************************/
 void app_communicationReset(void) {
@@ -47,6 +50,18 @@ void app_programControlLoop(void) {
 
     // Add to the logger
     fileLoggerBinary(mainLogger);
+
+    // My logger test
+    std::ofstream myLog("my_app_log.csv", std::ios::app);
+
+    int testInts[4] = {1, 2, 3, 4};
+
+    myLog << testInts[0] << ",";
+    myLog << testInts[1] << ",";
+    myLog << testInts[2] << ",";
+    myLog << testInts[3] << "\n";
+
+    myLog.close();
 }
 
 //creating a logger at a designated fileLocation.
@@ -55,7 +70,7 @@ std::shared_ptr<spdlog::logger> createLogger(std::string logID, std::string file
         auto logger = spdlog::basic_logger_mt(logID, fileLocation);
         // setLoggerStyle(logger);
         // logger->set_pattern("%v");
-        logger->set_pattern("%H:%M:%S %z, %v, %v, %v, %v");
+        logger->set_pattern("%H:%M:%S, %v, %v, %v, %v");
         return logger;
     } catch (const spdlog::spdlog_ex& ex) {
         std::cout << "Failed to create log: " << ex.what() << std::endl;
@@ -75,17 +90,6 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger) {
     // motorpos[1] = CO_OD_RAM.actualMotorPositions.motor2;
     // motorpos[2] = CO_OD_RAM.actualMotorPositions.motor3;
     // motorpos[3] = CO_OD_RAM.actualMotorPositions.motor4;
-
-    // double* jointVals = alexM.updateJoints();
-
-    // if (sizeof(jointVals) > 3) {
-    //     motorpos[0] = jointVals[0];
-    //     motorpos[1] = jointVals[1];
-    //     motorpos[2] = jointVals[2];
-    //     motorpos[3] = jointVals[3];
-    // } else {
-    //     std::cout << "Not enough elements in jointVals!";
-    // }
 
 #ifdef VIRTUAL
     motorpos[0] = CO_OD_RAM.targetMotorPositions.motor1;
@@ -112,7 +116,9 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger) {
     long long timesec = tv.tv_sec;
     long timeusec = tv.tv_usec;
 
-    logger->info("{}", timesec, timeusec, motorpos[0], motorpos[1], motorpos[2], motorpos[3]);
+    // logger->info("{}", timesec, timeusec, motorpos[0], motorpos[1], motorpos[2], motorpos[3]);
+    logger->info("{}", timesec, timeusec, testInts[0], testInts[1], testInts[2], testInts[3]);
+    logger->info("{}", testInts[2]);
 
     // logger->info("{}", timesec);
     // logger->info("{}", timeusec);

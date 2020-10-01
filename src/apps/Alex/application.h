@@ -57,6 +57,8 @@
 #include "stdio.h"
 
 // Header file to enable logging features with spdlog
+#include <fstream>
+
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/spdlog.h"
 
