@@ -3241,10 +3241,10 @@ struct sCO_OD_RAM {
     /*1029      */ UNSIGNED8 errorBehavior[6];
     /*1200      */ OD_SDOServerParameter_t SDOServerParameter[1];
     /*1280      */ OD_SDOClientParameter_t SDOClientParameter[1];
-    /*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[32];
-    /*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[32];
-    /*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[32];
-    /*1a00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[32];
+    /*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[CO_NO_RPDO];
+    /*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[CO_NO_RPDO];
+    /*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[CO_NO_TPDO];
+    /*1a00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[CO_NO_TPDO];
     /*1f80      */ UNSIGNED32 NMTStartup;
     /*1f81      */ UNSIGNED32 slaveAssignment[127];
     /*1f82      */ UNSIGNED8 requestNMT[127];

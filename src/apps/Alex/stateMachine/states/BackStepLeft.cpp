@@ -5,15 +5,15 @@ void BackStepLeft::entry(void) {
         << "==================" << endl
         << " Back Stepping Left" << endl
         << "==================" << endl;
-    trajectoryGenerator->initialiseTrajectory(RobotMode::BKSTEP, robot->getJointStates());
-    robot->startNewTraj();
-    robot->setCurrentState(AlexState::BackStepL);
 #ifdef VIRTUAL
     std::cout
         << "==================" << endl
         << " W ->> Complete trajectory" << endl
         << "==================" << endl;
 #endif
+    trajectoryGenerator->initialiseTrajectory(RobotMode::BKSTEP, robot->getJointStates());
+    robot->startNewTraj();
+    robot->setCurrentState(AlexState::BackStepL);
 }
 void BackStepLeft::during(void) {
     robot->moveThroughTraj();

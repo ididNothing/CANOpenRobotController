@@ -6,15 +6,15 @@ void SteppingLastRight::entry(void) {
         << "==================" << endl
         << " Stepping Last RIGHT" << endl
         << "==================" << endl;
-    trajectoryGenerator->initialiseTrajectory(RobotMode::FTTG, Foot::Left, robot->getJointStates());
-    robot->startNewTraj();
-    robot->setCurrentState(AlexState::StepLastR);
 #ifdef VIRTUAL
     std::cout
         << "==================" << endl
         << " W ->> Complete trajectory" << endl
         << "==================" << endl;
 #endif
+    trajectoryGenerator->initialiseTrajectory(RobotMode::FTTG, Foot::Left, robot->getJointStates());
+    robot->startNewTraj();
+    robot->setCurrentState(AlexState::StepLastR);
 }
 void SteppingLastRight::during(void) {
     robot->moveThroughTraj();

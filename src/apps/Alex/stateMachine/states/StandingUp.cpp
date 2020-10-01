@@ -6,15 +6,15 @@ void StandingUp::entry(void) {
               << "===================" << endl
               << " TRIGGER ->> STAND UP" << endl
               << "===================" << endl;
-    trajectoryGenerator->initialiseTrajectory(RobotMode::STNDUP, robot->getJointStates());
-    robot->startNewTraj();
-    robot->setCurrentState(AlexState::StandingUp);
 #ifdef VIRTUAL
     std::cout
         << "==================" << endl
         << " W ->> Complete trajectory" << endl
         << "==================" << endl;
 #endif
+    trajectoryGenerator->initialiseTrajectory(RobotMode::STNDUP, robot->getJointStates());
+    robot->startNewTraj();
+    robot->setCurrentState(AlexState::StandingUp);
 }
 
 void StandingUp::during(void) {
