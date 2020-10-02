@@ -3,6 +3,8 @@
 ////////////////////////////////////
 #include "DebugState.h"
 
+#ifdef VIRTUAL
+
 void DebugState::entry(void) {
     std::cout << "Debug State entered" << std::endl
               << "=======================" << std::endl
@@ -44,3 +46,5 @@ void DebugState::exit(void) {
     std::cout
         << "Debug State Exited" << endl;
 }
+
+#endif

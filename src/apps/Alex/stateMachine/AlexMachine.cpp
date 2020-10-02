@@ -265,9 +265,11 @@ bool AlexMachine::ResetButtons::check(void) {
 #endif
 }
 
+#ifdef VIRTUAL
 bool AlexMachine::DebugTransition::check(void) {
     return OWNER->robot->keyboard.getS();
 }
+#endif
 
 /**
  * \brief Statemachine to hardware interface method. Run any hardware update methods

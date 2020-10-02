@@ -8,6 +8,8 @@
  * 
  */
 
+#ifdef VIRTUAL
+
 #ifndef DEBUGSTATE_H_INCLUDED
 #define DEBUGSTATE_H_INCLUDED
 
@@ -33,4 +35,5 @@ class DebugState : public ExoTestState {
     DebugState(StateMachine *m, AlexRobot *exo, AlexTrajectoryGenerator *tg, const char *name = NULL) : ExoTestState(m, exo, tg, name){};
 };
 
+#endif
 #endif
