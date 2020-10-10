@@ -1319,14 +1319,14 @@ std::vector<jointspace_state> AlexTrajectoryGenerator::taskspace_states_to_joint
     jointspaceStates.push_back(initialJointspaceState);
     //First check whether any point in the trajectory contains NaN
     // convert every taskspace state to a jointspace state
-    for (const auto &taskspaceState : taskspaceStates) {
+    for (auto taskspaceState : taskspaceStates) {
         if(jointspace_NaN_check(taskspace_state_to_jointspace_state(taskspaceState, trajectoryParameters, pilotParameters))){
           containNaN = true;
           DEBUG_OUT("THE TRAJECTORY CONTAINS NAN");
         }
     }
     //construct the jointspaceStates with respect to whether it contains NaN
-    for (const auto &taskspaceState : taskspaceStates) {
+    for (auto taskspaceState : taskspaceStates) {
       if (containNaN == false){
         jointspaceStates.push_back(taskspace_state_to_jointspace_state(taskspaceState, trajectoryParameters, pilotParameters));
       }
