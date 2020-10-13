@@ -13,7 +13,7 @@
 #ifndef DEBUG_H_INCLUDED
 #define DEBUG_H_INCLUDED
 #include <iostream>
-// #define NOROBOT
+#define NOROBOT
 #define VIRTUAL  // To compile & run app without exo (loads DebugState, changes SM transitions, etc.)
 #define KEYBOARD
 #define DEBUG
