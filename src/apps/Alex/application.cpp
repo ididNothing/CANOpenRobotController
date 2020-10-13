@@ -30,6 +30,12 @@ void app_programStart(void) {
     mainLogger = createLogger("parent", "application_log.csv");
     spdlog::set_default_logger(mainLogger);
 
+    // My logger test
+    remove("my_app_log.csv");
+    std::ofstream myLog("my_app_log.csv", std::ios::app);
+    myLog << "Time since start, Current state, Motor0 angle, Motor1 angle, Motor2 angle, Motor3 angle, System time \n";
+    myLog.close();
+
     // Create csv file (not using spdlog)
     // std::ofstream myLog("my_app_log.csv");
 
@@ -54,42 +60,7 @@ void app_programControlLoop(void) {
         alexM.update();
     }
 
-    // Add to the logger
-    fileLoggerBinary(mainLogger);
-
-    // My logger test
-    std::ofstream myLog("my_app_log.csv", std::ios::app);
-
-    uint32_t motorpos[4];
-    uint16_t motorTor[4];
-
-#ifdef VIRTUAL
-    motorpos[0] = CO_OD_RAM.targetMotorPositions.motor1;
-    motorpos[1] = CO_OD_RAM.targetMotorPositions.motor2;
-    motorpos[2] = CO_OD_RAM.targetMotorPositions.motor3;
-    motorpos[3] = CO_OD_RAM.targetMotorPositions.motor4;
-#endif
-
-#ifndef VIRTUAL
-    motorpos[0] = CO_OD_RAM.actualMotorPositions.motor1;
-    motorpos[1] = CO_OD_RAM.actualMotorPositions.motor2;
-    motorpos[2] = CO_OD_RAM.actualMotorPositions.motor3;
-    motorpos[3] = CO_OD_RAM.actualMotorPositions.motor4;
-#endif
-
-    int testInts[4] = {1, 2, 3, 4};
-
-    // Time
-    time_t curr_tm = time(NULL);
-    // double curr_tm = difftime(time(&timer), start_tm);
-    myLog << asctime(localtime(&curr_tm)) << ",";  // Need to remove \n
-
-    myLog << motorpos[0] << ",";
-    myLog << motorpos[1] << ",";
-    myLog << motorpos[2] << ",";
-    myLog << motorpos[3] << "\n";
-
-    myLog.close();
+    app_fileLogger();
 }
 
 //creating a logger at a designated fileLocation.
@@ -131,11 +102,6 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger) {
     motorpos[3] = CO_OD_RAM.actualMotorPositions.motor4;
 #endif
 
-    motorTor[0] = CO_OD_RAM.statusWords.motor1;
-    motorTor[1] = CO_OD_RAM.statusWords.motor2;
-    motorTor[2] = CO_OD_RAM.statusWords.motor3;
-    motorTor[3] = CO_OD_RAM.statusWords.motor4;
-
     // Create test array
     int testInts[4] = {1, 2, 3, 4};
 
@@ -154,4 +120,63 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger) {
     //     mainLogger->info("{}", motorTor[i]);
     //     // mainLogger->info("{}", testInts[i]);
     // }
+}
+
+void app_fileLogger(void) {
+    // Add to the logger
+    fileLoggerBinary(mainLogger);
+
+    // My logger test
+    std::ofstream myLog("my_app_log.csv", std::ios::app);
+
+    uint32_t motorpos[4];
+    uint16_t motorTor[4];
+
+#ifdef VIRTUAL
+    motorpos[0] = CO_OD_RAM.targetMotorPositions.motor1;
+    motorpos[1] = CO_OD_RAM.targetMotorPositions.motor2;
+    motorpos[2] = CO_OD_RAM.targetMotorPositions.motor3;
+    motorpos[3] = CO_OD_RAM.targetMotorPositions.motor4;
+#endif
+
+#ifndef VIRTUAL
+    motorpos[0] = CO_OD_RAM.actualMotorPositions.motor1;
+    motorpos[1] = CO_OD_RAM.actualMotorPositions.motor2;
+    motorpos[2] = CO_OD_RAM.actualMotorPositions.motor3;
+    motorpos[3] = CO_OD_RAM.actualMotorPositions.motor4;
+
+    motorTor[0] = CO_OD_RAM.statusWords.motor1;
+    motorTor[1] = CO_OD_RAM.statusWords.motor2;
+    motorTor[2] = CO_OD_RAM.statusWords.motor3;
+    motorTor[3] = CO_OD_RAM.statusWords.motor4;
+#endif
+
+    // Convert joint angle to degrees
+    motorpos[0] = alexM.toRobotDriveAngle(motorpos[0]);
+    motorpos[1] = alexM.toRobotDriveAngle(motorpos[1]);
+    motorpos[2] = alexM.toRobotDriveAngle(motorpos[2]);
+    motorpos[3] = alexM.toRobotDriveAngle(motorpos[3]);
+
+    // Time
+    time_t curr_tm = time(NULL);
+    // double curr_tm = difftime(time(&timer), start_tm);
+
+    // Log motor positions
+    myLog << motorpos[0] << ",";
+    myLog << motorpos[1] << ",";
+    myLog << motorpos[2] << ",";
+    myLog << motorpos[3] << ",";
+
+#ifndef VIRTUAL
+    // Log motor torques
+    myLog << motorTor[0] << ",";
+    myLog << motorTor[1] << ",";
+    myLog << motorTor[2] << ",";
+    myLog << motorTor[3] << ",";
+#endif
+
+    // Log current system time (different to actual time)
+    myLog << asctime(localtime(&curr_tm));  // Need to remove \n
+
+    myLog.close();
 }

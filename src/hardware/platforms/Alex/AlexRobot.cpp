@@ -221,3 +221,8 @@ void AlexRobot::setVirtualPosition(double angle) {
     }
 }
 #endif
+
+double AlexRobot::toJointDriveAngle(int driveValue) {
+    AlexJoint *joint = (AlexJoint *)joints[0];
+    return (joint->fromDriveUnits(driveValue));
+}

@@ -226,6 +226,12 @@ class AlexRobot : public Robot {
 #endif
 
     /**
+    * \brief Call function from the AlexJoint class to convert drive encoder value to actual joint angle
+    * 
+    */
+    double toJointDriveAngle(int driveValue);
+
+    /**
     * \todo Move jointMinMap and jointMaxMap to RobotParams.h
     * 
     */

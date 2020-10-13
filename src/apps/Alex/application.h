@@ -115,4 +115,10 @@ void fileLoggerBinary(std::shared_ptr<spdlog::logger> logger);
  */
 std::shared_ptr<spdlog::logger> createLogger(std::string logID, std::string fileLocation);
 
+/**
+ * \brief Create a Logger object that generates a CSV file to manually write loggable data. Does not use spglog.
+ * 
+ */
+void app_fileLogger(void);
+
 #endif /*APP_H*/

@@ -279,3 +279,7 @@ bool AlexMachine::DebugTransition::check(void) {
 void AlexMachine::hwStateUpdate(void) {
     robot->updateRobot();
 }
+
+double AlexMachine::toRobotDriveAngle(int driveValue) {
+    return robot->toJointDriveAngle(driveValue);
+}
