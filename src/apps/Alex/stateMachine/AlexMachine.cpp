@@ -245,3 +245,11 @@ bool AlexMachine::ResetButtons::check(void) {
 void AlexMachine::hwStateUpdate(void) {
     robot->updateRobot();
 }
+
+double AlexMachine::toRobotDriveAngle(int driveValue) {
+    return robot->toJointDriveAngle(driveValue);
+}
+
+double AlexMachine::toRobotDriveAngle1(int driveValue) {
+    return robot->toJointDriveAngle1(driveValue);
+}

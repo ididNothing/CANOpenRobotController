@@ -87,6 +87,13 @@ class AlexMachine : public StateMachine {
     AlexTrajectoryGenerator* trajectoryGenerator;
 
     /**
+     * \brief Pass drive encoder value to the AlexRobot for conversion to degrees.
+     * 
+     */
+    double toRobotDriveAngle(int driveValue);
+    double toRobotDriveAngle1(int driveValue);
+
+    /**
      * Pointers to the relevant states - initialised in init
      *
      */

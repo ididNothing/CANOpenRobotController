@@ -93,4 +93,10 @@ void app_programAsync(uint16_t timer1msDiff);
  */
 void app_programControlLoop(void);
 
+/**
+ * \brief Create a Logger object that generates a CSV file to manually write loggable data. Does not use spglog.
+ * 
+ */
+void app_fileLogger(void);
+
 #endif /*APP_H*/

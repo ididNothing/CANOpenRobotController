@@ -219,6 +219,14 @@ class AlexRobot : public Robot {
     * 
     */
    bool disableJoints();
+
+    /**
+    * \brief Call function from the AlexJoint class to convert drive encoder value to actual joint angle
+    * 
+    */
+    double toJointDriveAngle(int driveValue);
+    double toJointDriveAngle1(int driveValue);
+
     /**
        * \brief Joint Limit Map between Joint value and max Degrees possible
        * \param int Joint value
