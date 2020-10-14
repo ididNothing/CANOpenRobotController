@@ -161,6 +161,8 @@ void app_fileLogger(void) {
     time_t curr_tm = time(NULL);
     // double curr_tm = difftime(time(&timer), start_tm);
 
+    // Log current state
+    myLog << CO_OD_RAM.currentState << ",";
     // Log motor positions
     myLog << motorpos[0] << ",";
     myLog << motorpos[1] << ",";
