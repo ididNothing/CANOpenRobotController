@@ -230,6 +230,7 @@ class AlexRobot : public Robot {
     * 
     */
     double toJointDriveAngle(int driveValue);
+    double toJointDriveAngle1(int driveValue);
 
     /**
     * \todo Move jointMinMap and jointMaxMap to RobotParams.h

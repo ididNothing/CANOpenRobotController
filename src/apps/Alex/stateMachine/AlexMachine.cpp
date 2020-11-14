@@ -283,3 +283,7 @@ void AlexMachine::hwStateUpdate(void) {
 double AlexMachine::toRobotDriveAngle(int driveValue) {
     return robot->toJointDriveAngle(driveValue);
 }
+
+double AlexMachine::toRobotDriveAngle1(int driveValue) {
+    return robot->toJointDriveAngle1(driveValue);
+}

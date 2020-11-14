@@ -33,7 +33,7 @@ void app_programStart(void) {
     // My logger test
     remove("my_app_log.csv");
     std::ofstream myLog("my_app_log.csv", std::ios::app);
-    myLog << "Time since start, Current state, Motor0 angle, Motor1 angle, Motor2 angle, Motor3 angle, System time \n";
+    myLog << "Current state, Motor0 angle, Motor1 angle, Motor2 angle, Motor3 angle, System time \n";
     myLog.close();
 
     // Create csv file (not using spdlog)
@@ -153,9 +153,9 @@ void app_fileLogger(void) {
 
     // Convert joint angle to degrees
     motorpos[0] = alexM.toRobotDriveAngle(motorpos[0]);
-    motorpos[1] = alexM.toRobotDriveAngle(motorpos[1]);
+    motorpos[1] = alexM.toRobotDriveAngle1(motorpos[1]);
     motorpos[2] = alexM.toRobotDriveAngle(motorpos[2]);
-    motorpos[3] = alexM.toRobotDriveAngle(motorpos[3]);
+    motorpos[3] = alexM.toRobotDriveAngle1(motorpos[3]);
 
     // Time
     time_t curr_tm = time(NULL);

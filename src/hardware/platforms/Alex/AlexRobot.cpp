@@ -226,3 +226,8 @@ double AlexRobot::toJointDriveAngle(int driveValue) {
     AlexJoint *joint = (AlexJoint *)joints[0];
     return (joint->fromDriveUnits(driveValue));
 }
+
+double AlexRobot::toJointDriveAngle1(int driveValue) {
+    AlexJoint *joint = (AlexJoint *)joints[1];
+    return (joint->fromDriveUnits(driveValue));
+}

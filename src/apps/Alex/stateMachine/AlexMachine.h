@@ -92,6 +92,7 @@ class AlexMachine : public StateMachine {
      * 
      */
     double toRobotDriveAngle(int driveValue);
+    double toRobotDriveAngle1(int driveValue);
 
     /**
      * Pointers to the relevant states - initialised in init
