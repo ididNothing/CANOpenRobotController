@@ -4,8 +4,8 @@
  * \brief Specific paramaters and naming definitions for exoskeleton robot class implementetion.
  * 
  * \version 0.1
- * \date 2020-04-09
- * \version 0.1
+ * \date 2020-23-12
+ * \version 0.2
  * \copyright Copyright (c) 2020
  */
 #include "AlexJoint.h"
@@ -26,29 +26,33 @@
  * \brief An enum type for robot communication with designed state machine
  * 
  */
-enum class AlexState { Init,         /**< 0 */
-               InitSitting,  /**< 1 */
-               LeftForward,  /**< 2 */
-               RightForward, /**< 3 */
-               Standing,     /**< 4 */
-               Sitting,      /**< 5 */
-               SittingDown,  /**< 6 */
-               StandingUp,   /**< 7 */
-               StepFirstL,   /**< 8 */
-               StepFirstR,   /**< 9 */
-               StepLastL,    /**< 10 */
-               StepLastR,    /**< 11 */
-               StepL,        /**< 12 */
-               StepR,        /**< 13 */
-               BackStepR,    /**< 14 */
-               BackStepL,    /**< 15 */
-               Error         /**< 16 */
+enum class AlexState
+{
+    Init,         /**< 0 */
+    InitSitting,  /**< 1 */
+    LeftForward,  /**< 2 */
+    RightForward, /**< 3 */
+    Standing,     /**< 4 */
+    Sitting,      /**< 5 */
+    SittingDown,  /**< 6 */
+    StandingUp,   /**< 7 */
+    StepFirstL,   /**< 8 */
+    StepFirstR,   /**< 9 */
+    StepLastL,    /**< 10 */
+    StepLastR,    /**< 11 */
+    StepL,        /**< 12 */
+    StepR,        /**< 13 */
+    BackStepR,    /**< 14 */
+    BackStepL,    /**< 15 */
+    Error,        /**< 16 */
+    Debug         /**< 17 */
 };
 /**
  * An enum type.
  * Joint Index for the 6 joints (note, NODEID = this + 1)
  */
-enum robotJoints {
+enum robotJoints
+{
     LEFT_HIP = 0,   /**< Left Hip*/
     LEFT_KNEE = 1,  /**< Left Knee*/
     RIGHT_HIP = 2,  /**< Right Hip*/
@@ -60,7 +64,8 @@ enum robotJoints {
  * An enum class.
  * Different Robot motion profiles
  */
-enum class RobotMode {
+enum class RobotMode
+{
     NORMALWALK,
     SITDWN,
     STNDUP,

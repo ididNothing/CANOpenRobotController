@@ -21,23 +21,28 @@ AlexJoint::AlexJoint(int jointID, double jointMin, double jointMax, Drive *drive
 }
 
 bool AlexJoint::updateValue() {
+    #ifndef VIRTUAL
     q = fromDriveUnits(drive->getPos());
     // FOR TESTING w/o real robot -> set current pos to last setPosition
-    //q = lastQCommand;
+#endif
+#ifdef VIRTUAL
+    q = lastQCommand;
+#endif
 
     return true;
 }
 
 setMovementReturnCode_t AlexJoint::setPosition(double desQ) {
-    // for testing w/o Robot
-    lastQCommand = desQ;
     if (desQ > qMax) {
-        DEBUG_OUT("Joint" << this->id << " COMMAND:" << desQ << " OUTSIDE OF MAXQ")
+        DEBUG_OUT("Joint " << this->id << " COMMAND: " << desQ << " OUTSIDE OF MAXQ")
         desQ = qMax;
     } else if (desQ < qMin) {
-        DEBUG_OUT("Joint" << this->id << " COMMAND:" << desQ << " OUTSIDE OF MINQ")
+        DEBUG_OUT("Joint " << this->id << " COMMAND: " << desQ << " OUTSIDE OF MINQ")
         desQ = qMin;
     }
+
+    // for testing w/o Robot
+    lastQCommand = desQ;
     return ActuatedJoint::setPosition(desQ);
 }
 

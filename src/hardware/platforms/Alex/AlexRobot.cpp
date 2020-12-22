@@ -101,9 +101,9 @@ bool AlexRobot::moveThroughTraj() {
 }
 
 bool AlexRobot::initialiseJoints() {
-    JointKnownPos hipParam{250880, 0, 90, 180};
-    JointKnownPos kneeParam{250880, 0, 90, 0};
-    JointKnownPos ankleParam{0, -800000, 90, 115};
+    JointKnownPos hipParam{HIP_MOTOR_POS1, HIP_MOTOR_POS2, HIP_MOTOR_DEG1, HIP_MOTOR_DEG2};
+    JointKnownPos kneeParam{KNEE_MOTOR_POS1, KNEE_MOTOR_POS2, KNEE_MOTOR_DEG1, KNEE_MOTOR_DEG2};
+    JointKnownPos ankleParam{ANKLE_MOTOR_POS1, ANKLE_MOTOR_POS2, ANKLE_MOTOR_DEG1, ANKLE_MOTOR_DEG2};
 
     for (int id = 0; id < 4; id++) {
         if (id == LEFT_HIP || id == RIGHT_HIP) {
@@ -213,3 +213,11 @@ bool AlexRobot::disableJoints() {
 
     return tmp;
 }
+
+#ifdef VIRTUAL
+void AlexRobot::setVirtualPosition(double angle) {
+    for (auto joint : joints) {
+        ((AlexJoint *)joint)->setPosition(angle);
+    }
+}
+#endif 
