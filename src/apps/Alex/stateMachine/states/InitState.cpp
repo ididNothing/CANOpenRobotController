@@ -1,14 +1,22 @@
 #include "InitState.h"
 
-void InitState::entry(void) {
+void InitState::entry(void)
+{
     std::cout
         << "==================================" << endl
         << " WELCOME USER" << endl
         << "==================================" << endl
-        << endl
-        << "========================" << endl
-        << " PRESS S to start program" << endl
-        << "========================" << endl;
+        << endl;
+#ifdef KEYBOARD
+    std::cout << "========================" << endl
+              << " PRESS D to start program" << endl
+              << "========================" << endl;
+#endif
+#ifdef VIRTUAL
+    std::cout << "========================" << endl
+              << " Press S to enter Debug state" << endl
+              << "========================" << endl;
+#endif
     //Initialize OD entries - Must be something other then Initial -> must be sent by crutch @ startup
     robot->setCurrentState(AlexState::Init);
     robot->setCurrentMotion(RobotMode::NORMALWALK);
@@ -17,7 +25,8 @@ void InitState::entry(void) {
     // entry flag must be set to true by a green button release
     robot->setResetFlag(false);
 }
-void InitState::during(void) {
+void InitState::during(void)
+{
     //Virtual crutch - changing OD.nm
     // RobotMode modeSelected = robot->pb.updateController(robot->keyboard.getE(), robot->keyboard.getW(), robot->keyboard.getX());
     // if (modeSelected == RobotMode::INITIAL) {
@@ -27,7 +36,8 @@ void InitState::during(void) {
     updateCrutch();
     updateFlag();
 }
-void InitState::exit(void) {
+void InitState::exit(void)
+{
     robot->initPositionControl();
     PilotParameters Brad_parameters = {
         .lowerleg_length = 0.44,
