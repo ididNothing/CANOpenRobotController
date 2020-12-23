@@ -46,6 +46,7 @@
 // State Classes
 #include "BackStepLeft.h"
 #include "BackStepRight.h"
+#include "DebugState.h"
 #include "ErrorState.h"
 #include "InitState.h"
 #include "InitialSitting.h"
@@ -68,8 +69,9 @@
  * @brief Example implementation of a StateMachine for the ExoRobot class. States should implemented ExoTestState
  *
  */
-class AlexMachine : public StateMachine {
-   public:
+class AlexMachine : public StateMachine
+{
+public:
     bool running = false;
     /**
      *  \todo Pilot Parameters would be set in constructor here
@@ -81,39 +83,44 @@ class AlexMachine : public StateMachine {
     void deactivate();
 
     void hwStateUpdate();
-    State* gettCurState();
-    void initRobot(AlexRobot* rb);
+    State *gettCurState();
+    void initRobot(AlexRobot *rb);
     bool trajComplete;
-    AlexTrajectoryGenerator* trajectoryGenerator;
+    AlexTrajectoryGenerator *trajectoryGenerator;
 
     /**
      * Pointers to the relevant states - initialised in init
      *
      */
-    InitState* initState;
-    InitialSitting* initialSitting;
-    SittingDwn* sittingDwn;
-    StandingUp* standingUp;
-    Sitting* sitting;
-    Standing* standing;
-    SteppingFirstLeft* steppingFirstLeft;
-    LeftForward* leftForward;
-    SteppingRight* steppingRight;
-    RightForward* rightForward;
-    SteppingLeft* steppingLeft;
-    SteppingLastRight* steppingLastRight;
-    SteppingLastLeft* steppingLastLeft;
-    ErrorState* errorState;
-    BackStepLeft* backStepLeft;
-    BackStepRight* backStepRight;
-    SteppingLeftStair* steppingLeftStair;
-    SteppingRightStair* steppingRightStair;
-    SteppingLeftStairDown* steppingLeftStairDown;
-    SteppingRightStairDown* steppingRightStairDown;
-   protected:
-    AlexRobot* robot; /*<!Pointer to the Robot*/
+    InitState *initState;
+    InitialSitting *initialSitting;
+    SittingDwn *sittingDwn;
+    StandingUp *standingUp;
+    Sitting *sitting;
+    Standing *standing;
+    SteppingFirstLeft *steppingFirstLeft;
+    LeftForward *leftForward;
+    SteppingRight *steppingRight;
+    RightForward *rightForward;
+    SteppingLeft *steppingLeft;
+    SteppingLastRight *steppingLastRight;
+    SteppingLastLeft *steppingLastLeft;
+    ErrorState *errorState;
+    BackStepLeft *backStepLeft;
+    BackStepRight *backStepRight;
+    SteppingLeftStair *steppingLeftStair;
+    SteppingRightStair *steppingRightStair;
+    SteppingLeftStairDown *steppingLeftStairDown;
+    SteppingRightStairDown *steppingRightStairDown;
 
-   private:
+#ifdef VIRTUAL
+    DebugState *debug;
+#endif
+
+protected:
+    AlexRobot *robot; /*<!Pointer to the Robot*/
+
+private:
     /**
      *
      * \brief Event Objects defined using Macro defined in StateMachine.h
@@ -137,6 +144,9 @@ class AlexMachine : public StateMachine {
     EventObject(UpStairSelect) * upStairSelect;
     EventObject(DownStairSelect) * downStairSelect;
 
+#ifdef VIRTUAL
+    EventObject(DebugTransition) * debugTransition;
+#endif
 };
 
 #endif /*EXO_SM_H*/
