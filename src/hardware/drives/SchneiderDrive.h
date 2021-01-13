@@ -21,31 +21,32 @@
  * \brief An implementation of the Drive Object, specifically for Copley-branded devices (currently used on the X2 Exoskeleton)
  * 
  */
-class SchneiderDrive : public Drive {
-   public:
-    /**
+class SchneiderDrive : public Drive
+{
+public:
+     /**
          * \brief Construct a new Copley Drive object
          * 
          * \param NodeID CANopen Node ID
          */
-    SchneiderDrive(int NodeID);
+     SchneiderDrive(int NodeID);
 
-    /**
+     /**
          * \brief Destroy the Copley Drive object
          * 
          */
-    ~SchneiderDrive();
-    /**
+     ~SchneiderDrive();
+     /**
          * Initialises the drive (SDO start message)
          * 
          * \return True if successful, False if not
          */
-    bool Init();
-    /**
+     bool Init();
+     /**
      * \todo Move jointMinMap and jointMaxMap to set additional parameters (bit 5 in 0x6041 makes updates happen immediately)
      * 
      */
-    /**
+     /**
          * Sets the drive to Position control with default parameters (through SDO messages)
          * 
          * Note: Should be overloaded to allow parameters to be set
@@ -53,8 +54,8 @@ class SchneiderDrive : public Drive {
          * \return true if successful
          * \return false if not
          */
-    bool initPosControl(motorProfile posControlMotorProfile);
-    /**
+     bool initPosControl(motorProfile posControlMotorProfile);
+     /**
          * Sets the drive to Velocity control with default parameters (through SDO messages)
          * 
          * Note: Should be overloaded to allow parameters to be set
@@ -62,9 +63,9 @@ class SchneiderDrive : public Drive {
          * \return true if successful
          * \return false if not
          */
-    bool initVelControl(motorProfile velControlMotorProfile);
+     bool initVelControl(motorProfile velControlMotorProfile);
 
-    /**
+     /**
          * Sets the drive to Torque control with default parameters (through SDO messages)
          * 
          * Note: Should be overloaded to allow parameters to be set
@@ -72,8 +73,8 @@ class SchneiderDrive : public Drive {
          * \return true if successful
          * \return false if not
          */
-    bool initTorqueControl();
-    /**
+     bool initTorqueControl();
+     /**
           * \brief Overloaded method from Drive, specifically for Copley Drive implementation.
           *     Generates the list of commands required to configure Position control in CANopen motor drive
           * 
@@ -93,8 +94,8 @@ class SchneiderDrive : public Drive {
           * 
           */
 
-    std::vector<std::string> generatePosControlConfigSDO(motorProfile positionProfile);
-    /**
+     std::vector<std::string> generatePosControlConfigSDO(motorProfile positionProfile);
+     /**
           * \brief Overloaded method from Drive, specifically for Copley Drive implementation.
           *     Generates the list of commands required to configure Velocity control in CANopen motor drive
           * 
@@ -110,8 +111,8 @@ class SchneiderDrive : public Drive {
           *           https://www.can-cia.org/can-knowledge/canopen/cia402/
           * 
           */
-    std::vector<std::string> generateVelControlConfigSDO(motorProfile velocityProfile);
-    /**
+     std::vector<std::string> generateVelControlConfigSDO(motorProfile velocityProfile);
+     /**
           * \brief Overloaded method from Drive, specifically for Copley Drive implementation.
           *     Generates the list of commands required to configure Torque control in CANopen motor drive
           *
@@ -119,19 +120,19 @@ class SchneiderDrive : public Drive {
           *           https://www.can-cia.org/can-knowledge/canopen/cia402/
           *
           */
-    std::vector<std::string> generateTorqueControlConfigSDO();
-    /**
- * \brief Overload Drive class initPDO function for Schenider implementation
- * 
- * \return true 
- * \return false 
- */
-    bool initPDOs();
-    /**
+     std::vector<std::string> generateTorqueControlConfigSDO();
+     /**
+           * \brief Overload Drive class initPDO function for Schenider implementation
+           * 
+           * \return true 
+           * \return false 
+           */
+     bool initPDOs();
+     /**
      * \brief Overload Drive class generateRPDOConfigSDO function for Schenider ankle implementation
      * 
      */
-    std::vector<std::string> generateRPDOConfigSDO(std::vector<OD_Entry_t> items, int PDO_Num, int UpdateTiming);
+     std::vector<std::string> generateRPDOConfigSDO(std::vector<OD_Entry_t> items, int PDO_Num, int UpdateTiming);
 };
 
 #endif

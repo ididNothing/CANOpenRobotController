@@ -111,17 +111,12 @@ bool Drive::initPDOs() {
     DEBUG_OUT("Set up ACTUAL_POS and ACTUAL_VEL TPDO")
     sendSDOMessages(generateTPDOConfigSDO({ACTUAL_POS, ACTUAL_VEL}, 2, 1));
 
-    DEBUG_OUT("Set up ACTUAL_TOR TPDO")
-    sendSDOMessages(generateTPDOConfigSDO({ACTUAL_TOR}, 3, 1));
-
     DEBUG_OUT("Set up TARGET_POS RPDO")
     sendSDOMessages(generateRPDOConfigSDO({TARGET_POS}, 3, 0xff));
 
     DEBUG_OUT("Set up TARGET_VEL RPDO")
     sendSDOMessages(generateRPDOConfigSDO({TARGET_VEL}, 4, 0xff));
 
-    DEBUG_OUT("Set up TARGET_TOR RPDO")
-    sendSDOMessages(generateRPDOConfigSDO({TARGET_TOR}, 5, 0xff));
     return true;
 }
 

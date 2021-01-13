@@ -8,18 +8,22 @@
 
 #include "DebugMacro.h"
 
-SchneiderDrive::SchneiderDrive(int NodeID) : Drive::Drive(NodeID) {
+SchneiderDrive::SchneiderDrive(int NodeID) : Drive::Drive(NodeID)
+{
     this->NodeID = NodeID;
 }
-SchneiderDrive::~SchneiderDrive() {
+SchneiderDrive::~SchneiderDrive()
+{
     DEBUG_OUT(" SchneiderDrive Deleted ")
 }
 
-bool SchneiderDrive::Init() {
+bool SchneiderDrive::Init()
+{
     return false;
 }
 
-bool SchneiderDrive::initPosControl(motorProfile posControlMotorProfile) {
+bool SchneiderDrive::initPosControl(motorProfile posControlMotorProfile)
+{
     DEBUG_OUT("NodeID " << NodeID << " Initialising Position Control")
 
     // Send same as other motro config using motor profile
@@ -30,7 +34,8 @@ bool SchneiderDrive::initPosControl(motorProfile posControlMotorProfile) {
     return true;
 }
 
-bool SchneiderDrive::initVelControl(motorProfile velControlMotorProfile) {
+bool SchneiderDrive::initVelControl(motorProfile velControlMotorProfile)
+{
     DEBUG_OUT("NodeID " << NodeID << " Initialising Velocity Control")
     /**
      * \todo create velControlMOTORPROFILE and test on exo
@@ -41,29 +46,25 @@ bool SchneiderDrive::initVelControl(motorProfile velControlMotorProfile) {
     return true;
 }
 
-bool SchneiderDrive::initTorqueControl() {
+bool SchneiderDrive::initTorqueControl()
+{
     DEBUG_OUT("NodeID " << NodeID << " Initialising Torque Control")
     sendSDOMessages(generateTorqueControlConfigSDO());
 
     return false;
 }
 
-bool SchneiderDrive::initPDOs() {
-    DEBUG_OUT("Drive::initPDOs")
-    DEBUG_OUT("Set up STATUS_WORD TPDO")
-    sendSDOMessages(generateTPDOConfigSDO({STATUS_WORD}, 1, 0xFF));
-
-    DEBUG_OUT("Set up ACTUAL_POS and ACTUAL_VEL TPDO")
-    sendSDOMessages(generateTPDOConfigSDO({ACTUAL_POS, ACTUAL_VEL}, 2, 1));
-
-    DEBUG_OUT("Set up TARGET_POS RPDO")
-    sendSDOMessages(generateRPDOConfigSDO({TARGET_POS}, 3, 0xff));
-
-    DEBUG_OUT("Set up TARGET_VEL RPDO")
-    sendSDOMessages(generateRPDOConfigSDO({TARGET_VEL}, 4, 0xff));
+bool SchneiderDrive::initPDOs()
+{
+    DEBUG_OUT("==== SETTING UP PDOs FOR SCHNEIDER ====")
+    Drive::initPDOs();
+    
+    DEBUG_OUT("Set up MOTOR_TEMP TPDO")
+    sendSDOMessages(generateTPDOConfigSDO({MOTOR_TEMP_SCHNEIDER}, 4, 1));
     return true;
 }
-std::vector<std::string> SchneiderDrive::generateRPDOConfigSDO(std::vector<OD_Entry_t> items, int PDO_Num, int UpdateTiming) {
+std::vector<std::string> SchneiderDrive::generateRPDOConfigSDO(std::vector<OD_Entry_t> items, int PDO_Num, int UpdateTiming)
+{
     /**
      *  \todo Do a check to make sure that the OD_Entry_t items can be Received
      *
@@ -99,7 +100,8 @@ std::vector<std::string> SchneiderDrive::generateRPDOConfigSDO(std::vector<OD_En
     CANCommands.push_back(sstream.str());
     sstream.str(std::string());
 
-    for (int i = 1; i <= items.size(); i++) {
+    for (int i = 1; i <= items.size(); i++)
+    {
         // Set transmit parameters
         sstream
             << "[1] " << NodeID << " write 0x" << std::hex
@@ -125,7 +127,8 @@ std::vector<std::string> SchneiderDrive::generateRPDOConfigSDO(std::vector<OD_En
 
     return CANCommands;
 }
-std::vector<std::string> SchneiderDrive::generatePosControlConfigSDO(motorProfile positionProfile) {
+std::vector<std::string> SchneiderDrive::generatePosControlConfigSDO(motorProfile positionProfile)
+{
     DEBUG_OUT("generating Pos Control config SDO")
     std::vector<std::string> CANCommands;
     // Define stringstream for ease of constructing hex strings
@@ -169,10 +172,12 @@ std::vector<std::string> SchneiderDrive::generatePosControlConfigSDO(motorProfil
     ; /*<!execute base class function*/
 };
 
-std::vector<std::string> SchneiderDrive::generateVelControlConfigSDO(motorProfile velocityProfile) {
+std::vector<std::string> SchneiderDrive::generateVelControlConfigSDO(motorProfile velocityProfile)
+{
     return Drive::generateVelControlConfigSDO(velocityProfile); /*<!execute base class function*/
 };
 
-std::vector<std::string> SchneiderDrive::generateTorqueControlConfigSDO() {
+std::vector<std::string> SchneiderDrive::generateTorqueControlConfigSDO()
+{
     return Drive::generateTorqueControlConfigSDO(); /*<!execute base class function*/
 }

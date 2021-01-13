@@ -8,18 +8,38 @@
 
 #include "DebugMacro.h"
 
-CopleyDrive::CopleyDrive(int NodeID) : Drive::Drive(NodeID) {
+CopleyDrive::CopleyDrive(int NodeID) : Drive::Drive(NodeID)
+{
     this->NodeID = NodeID;
 }
-CopleyDrive::~CopleyDrive() {
+CopleyDrive::~CopleyDrive()
+{
     DEBUG_OUT(" CopleyDrive Deleted ")
 }
 
-bool CopleyDrive::Init() {
+bool CopleyDrive::Init()
+{
     return false;
 }
 
-bool CopleyDrive::initPosControl(motorProfile posControlMotorProfile) {
+bool CopleyDrive::initPDOs()
+{
+
+    DEBUG_OUT("==== SETTING UP PDOs FOR COPLEY ====")
+    Drive::initPDOs();
+
+    DEBUG_OUT("Set up ACTUAL_TOR TPDO")
+    sendSDOMessages(generateTPDOConfigSDO({ACTUAL_TOR}, 3, 1));
+
+    DEBUG_OUT("Set up MOTOR_TEMP TPDO on Copley")
+    sendSDOMessages(generateTPDOConfigSDO({MOTOR_TEMP_COPLEY}, 4, 1));
+
+    DEBUG_OUT("Set up TARGET_TOR RPDO")
+    sendSDOMessages(generateRPDOConfigSDO({TARGET_TOR}, 5, 0xff));
+}
+
+bool CopleyDrive::initPosControl(motorProfile posControlMotorProfile)
+{
     DEBUG_OUT("NodeID " << NodeID << " Initialising Position Control")
 /*Catch SDO msg set up for real robot here*/
 #ifndef VIRTUAL
@@ -28,7 +48,8 @@ bool CopleyDrive::initPosControl(motorProfile posControlMotorProfile) {
     return true;
 }
 
-bool CopleyDrive::initVelControl(motorProfile velControlMotorProfile) {
+bool CopleyDrive::initVelControl(motorProfile velControlMotorProfile)
+{
     DEBUG_OUT("NodeID " << NodeID << " Initialising Velocity Control")
     /**
      * \todo create velControlMOTORPROFILE and test on exo
@@ -39,20 +60,24 @@ bool CopleyDrive::initVelControl(motorProfile velControlMotorProfile) {
     return true;
 }
 
-bool CopleyDrive::initTorqueControl() {
+bool CopleyDrive::initTorqueControl()
+{
     DEBUG_OUT("NodeID " << NodeID << " Initialising Torque Control")
     sendSDOMessages(generateTorqueControlConfigSDO());
 
     return false;
 }
-std::vector<std::string> CopleyDrive::generatePosControlConfigSDO(motorProfile positionProfile) {
+std::vector<std::string> CopleyDrive::generatePosControlConfigSDO(motorProfile positionProfile)
+{
     return Drive::generatePosControlConfigSDO(positionProfile); /*<!execute base class function*/
 };
 
-std::vector<std::string> CopleyDrive::generateVelControlConfigSDO(motorProfile velocityProfile) {
+std::vector<std::string> CopleyDrive::generateVelControlConfigSDO(motorProfile velocityProfile)
+{
     return Drive::generateVelControlConfigSDO(velocityProfile); /*<!execute base class function*/
 };
 
-std::vector<std::string> CopleyDrive::generateTorqueControlConfigSDO() {
+std::vector<std::string> CopleyDrive::generateTorqueControlConfigSDO()
+{
     return Drive::generateTorqueControlConfigSDO(); /*<!execute base class function*/
 }
