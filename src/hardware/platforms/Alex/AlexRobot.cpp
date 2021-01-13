@@ -112,7 +112,7 @@ bool AlexRobot::initialiseJoints() {
         } else if (id == LEFT_KNEE || id == RIGHT_KNEE) {
             Drives.push_back(new CopleyDrive(id + 1));
             joints.push_back(new AlexJoint(id, jointMinMap[id], jointMaxMap[id], Drives[id], kneeParam));
-        } else {  // is an ankle  ->  CHANGE DRIVE to Ankle drives NOT COPLEY
+        } else {  // is an ankle  ->  CHANGE DRIVE to Schneider drives NOT COPLEY
             Drives.push_back(new SchneiderDrive(id + 1));
             joints.push_back(new AlexJoint(id, jointMinMap[id], jointMaxMap[id], Drives[id], ankleParam));
         }
