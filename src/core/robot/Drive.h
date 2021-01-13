@@ -26,7 +26,8 @@
  * \brief Supported drive control modes
  * 
  */
-enum ControlMode {
+enum ControlMode
+{
     UNCONFIGURED = 0,     /**< 0 */
     POSITION_CONTROL = 1, /**< 1 */
     VELOCITY_CONTROL = 2, /**< 2 */
@@ -38,7 +39,8 @@ enum ControlMode {
  * \brief Supported drive states
  * 
  */
-enum DriveState {
+enum DriveState
+{
     DISABLED = 0,           /**< 0 */
     READY_TO_SWITCH_ON = 1, /**< 1 */
     ENABLED = 2,            /**< 2 */
@@ -48,14 +50,17 @@ enum DriveState {
  * \brief Commonly-used Object Dictionary (OD) entries for CiA402 Drives
  * 
  */
-enum OD_Entry_t {
-    STATUS_WORD = 0, /**< 0 */
-    ACTUAL_POS = 1,  /**< 1 */
-    ACTUAL_VEL = 2,  /**< 2 */
-    ACTUAL_TOR = 3,  /**< 3 */
-    TARGET_POS = 11, /**< 11 */
-    TARGET_VEL = 12, /**< 12 */
-    TARGET_TOR = 13  /**< 13 */
+enum OD_Entry_t
+{
+    STATUS_WORD = 0,          /**< 0 */
+    ACTUAL_POS = 1,           /**< 1 */
+    ACTUAL_VEL = 2,           /**< 2 */
+    ACTUAL_TOR = 3,           /**< 3 */
+    TARGET_POS = 11,          /**< 11 */
+    TARGET_VEL = 12,          /**< 12 */
+    TARGET_TOR = 13,          /**< 13 */
+    MOTOR_TEMP_SCHNEIDER = 4, /**< 4 */
+    MOTOR_TEMP_COPLEY = 5     /**< 5 */
 };
 
 /**
@@ -72,7 +77,9 @@ static std::map<OD_Entry_t, int> OD_Addresses = {
     {ACTUAL_TOR, 0x6077},
     {TARGET_POS, 0x607A},
     {TARGET_VEL, 0x60FF},
-    {TARGET_TOR, 0x6071}};
+    {TARGET_TOR, 0x6071},
+    {MOTOR_TEMP_SCHNEIDER, 0x2018},
+    {MOTOR_TEMP_COPLEY, 0x2202}};
 
 /**
  * \brief Map between commonly-used Object Dictionary (OD) entries and their respective data lengths
@@ -96,7 +103,8 @@ static std::map<OD_Entry_t, int> OD_Data_Size = {
  *  Stores the desired velocity, acceleration and deceleration values of a motor profile.
  * 
  */
-struct motorProfile {
+struct motorProfile
+{
     int profileVelocity;
     int profileAcceleration;
     int profileDeceleration;
@@ -105,7 +113,8 @@ struct motorProfile {
  * The sdoReturnCode_t is used to determine whether the correct number of SDO messages
  * were recieved succesfully by nodes on the network.  
  */
-enum sdoReturnCode_t {
+enum sdoReturnCode_t
+{
     CORRECT_NUM_CONFIRMATION = 1,
     INCORRECT_NUM_CONFIRMATION = 0,
 };
@@ -115,8 +124,9 @@ enum sdoReturnCode_t {
  * \brief Abstract class describing a Drive used to communicate with a CANbus device. Note that many functions are implemented according to the CiA 402 Standard (but can be overridden)
  * 
  */
-class Drive {
-   protected:
+class Drive
+{
+protected:
     /**
      * \brief The CANopen Node ID used to address this drive on the CAN bus
      * 
@@ -195,7 +205,7 @@ class Drive {
 
     sdoReturnCode_t sendSDOMessages(std::vector<std::string> messages);
 
-   private:
+private:
     /**
      * \brief Current status word of the drive
      * 
@@ -220,7 +230,7 @@ class Drive {
      */
     ControlMode controlMode = UNCONFIGURED;
 
-   public:
+public:
     /**
      * \brief Construct a new Drive object
      * 
