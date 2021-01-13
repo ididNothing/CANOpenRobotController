@@ -109,7 +109,7 @@ typedef domain_t CO_DOMAIN;
 /*******************************************************************************
    OBJECT DICTIONARY
 *******************************************************************************/
-#define CO_OD_NoOfElements 254
+#define CO_OD_NoOfElements 255
 
 /*******************************************************************************
    TYPE DEFINITIONS FOR RECORDS
@@ -191,6 +191,16 @@ typedef domain_t CO_DOMAIN;
     UNSIGNED64 epochTimeBaseMs;
     UNSIGNED32 epochTimeOffsetMs;
 } OD_time_t;
+/*2202    */ typedef struct
+{
+    UNSIGNED16 motor1;
+    UNSIGNED16 motor2;
+    UNSIGNED16 motor3;
+    UNSIGNED16 motor4;
+    UNSIGNED16 motor5;
+    UNSIGNED16 motor6;
+} OD_motorTemperatures_t;
+
 /*2209    */ typedef struct
 {
     UNSIGNED8 numberOfMotors;
@@ -2241,6 +2251,14 @@ typedef domain_t CO_DOMAIN;
 #define OD_2130_2_time_epochTimeBaseMs 2
 #define OD_2130_3_time_epochTimeOffsetMs 3
 
+/*2202 */
+#define OD_2202_motor_1_temp
+#define OD_2202_motor_2_temp
+#define OD_2202_motor_3_temp
+#define OD_2202_motor_4_temp
+#define OD_2202_motor_5_temp
+#define OD_2202_motor_6_temp
+
 /*2209 */
 #define OD_2209_motorTempSensorVoltages 0x2209
 
@@ -3220,10 +3238,10 @@ struct sCO_OD_RAM {
     /*1029      */ UNSIGNED8 errorBehavior[6];
     /*1200      */ OD_SDOServerParameter_t SDOServerParameter[1];
     /*1280      */ OD_SDOClientParameter_t SDOClientParameter[1];
-    /*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[32];
-    /*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[32];
-    /*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[32];
-    /*1a00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[32];
+    /*1400      */ OD_RPDOCommunicationParameter_t RPDOCommunicationParameter[CO_NO_RPDO];
+    /*1600      */ OD_RPDOMappingParameter_t RPDOMappingParameter[CO_NO_RPDO];
+    /*1800      */ OD_TPDOCommunicationParameter_t TPDOCommunicationParameter[CO_NO_TPDO];
+    /*1a00      */ OD_TPDOMappingParameter_t TPDOMappingParameter[CO_NO_TPDO];
     /*1f80      */ UNSIGNED32 NMTStartup;
     /*1f81      */ UNSIGNED32 slaveAssignment[127];
     /*1f82      */ UNSIGNED8 requestNMT[127];
@@ -3242,6 +3260,7 @@ struct sCO_OD_RAM {
     /*2112      */ INTEGER32 variableNV_Int32[16];
     /*2120      */ OD_testVar_t testVar;
     /*2130      */ OD_time_t time;
+    /*2202      */ OD_motorTemperatures_t motorTemperatures;
     /*2209      */ OD_motorTempSensorVoltages_t motorTempSensorVoltages;
     /*2301      */ OD_traceConfig_t traceConfig[32];
     /*2400      */ UNSIGNED8 traceEnable;
