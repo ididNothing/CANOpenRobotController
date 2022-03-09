@@ -28,10 +28,13 @@ class LoggingRobot : public Robot {
     std::vector<RobotousRFT *> crutchSensors;
     Eigen::VectorXd crutchReadings;  //6xN Vector containing all crutch readings
 
-    ForcePlateSensor* forcePlate;
-    Eigen::VectorXi forcePlateForces;  // Should be a vector of size 4
+    std::vector<ForcePlateSensor*> forcePlates;
+    Eigen::VectorXi forcePlateForces;  // Should be a vector of size 4xN
 
-    // -- Variables assoacited with parameters already transmitted from the robot -- // 
+    std::vector<ForcePlateSensor *> footSensors;
+    Eigen::VectorXi footSensorForces;  // Should be a vector of size 4xN
+
+    // -- Variables assoacited with parameters already transmitted from the robot -- //
     std::vector<RPDO *> rpdos;
 
     // Motor Positions, Velocity
@@ -53,15 +56,15 @@ class LoggingRobot : public Robot {
     // Current State
     // Current Motion
     // Might need an additional about trajectory progress? (or could use target position)
-    INTEGER16 state;
-    INTEGER16 currentMotion;
+    INTEGER8 state;
+    INTEGER8 currentMotion;
 
     bool sensorsOn = false;
 
    public:
     Keyboard *keyboard;
 
-    LoggingRobot();
+    LoggingRobot(std::string robot_name="", std::string yaml_config_file="");
     ~LoggingRobot();
 
     // Functions which are needed for the Robot Class - they don't do anything at the moment
@@ -71,36 +74,38 @@ class LoggingRobot : public Robot {
 
     /**
      * @brief Updates local copy of forces, and returns them
-     * 
+     *
      * @return Eigen::VectorXd& a 6xN (N is number of crutches) of crutch sensor readings
      */
     Eigen::VectorXd &getCrutchReadings();
     Eigen::VectorXi &getForcePlateReadings();
+    Eigen::VectorXi &getFootSensorReadings();
+
     Eigen::Matrix<INTEGER32, Eigen::Dynamic, 1> &getMotorPositions();
     Eigen::Matrix<INTEGER32, Eigen::Dynamic, 1> &getMotorVelocities();
     Eigen::Matrix<INTEGER16, Eigen::Dynamic, 1> &getMotorTorques();
 
     INTEGER16& getGoButton();
-    INTEGER16&  getCurrentState();
-    INTEGER16&  getCurrentMovement();
+    INTEGER8&  getCurrentState();
+    INTEGER8&  getCurrentMovement();
 
 
     /**
      * @brief Takes the forces from the crutches and updates a local copy
-     * 
+     *
      */
     void updateCrutchReadings();
 
     void setCrutchOffsets(Eigen::VectorXd offsets);
     void zeroForcePlate();
+    void zeroLeftFoot();
+    void zeroRightFoot();
 
     bool startSensors();
     bool stopSensors();
 
     bool startCrutchSensors();
     bool stopCrutchSensors();
-
-
     bool configureMasterPDOs();
     };
 

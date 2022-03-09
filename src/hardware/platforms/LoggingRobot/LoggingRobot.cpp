@@ -1,26 +1,45 @@
 #include "LoggingRobot.h"
 
-LoggingRobot::LoggingRobot() {
+LoggingRobot::LoggingRobot(std::string robot_name, std::string yaml_config_file) :  Robot(robot_name, yaml_config_file) {
     spdlog::info("New Logging Robot");
+
+    //Check if YAML file exists and contain robot parameters
+    initialiseFromYAML(yaml_config_file);
 
     initialiseJoints();
     initialiseInputs();
 }
 
 bool LoggingRobot::initialiseInputs() {
-    spdlog::info("test");
 
     inputs.push_back(keyboard = new Keyboard());
-    spdlog::info("test");
 
-    inputs.push_back(forcePlate = new ForcePlateSensor(0x3f0, 0x3f1, 0x3f2));
+    // Force Plates
+    forcePlates.push_back(new ForcePlateSensor(0x3f0, 0x3f1, 0x3f2));
+    forcePlates.push_back(new ForcePlateSensor(0x3f0, 0x3f3, 0x3f4));
+    forcePlates.push_back(new ForcePlateSensor(0x3f0, 0x3f5, 0x3f6));
+    forcePlates.push_back(new ForcePlateSensor(0x3f0, 0x3f7, 0x3f8));
+
+    // Add to input stack
+    for (uint i = 0; i < forcePlates.size(); i++) {
+        inputs.push_back(forcePlates[i]);
+    }
+
+    // Foot Sensors
+    footSensors.push_back(new ForcePlateSensor(0x3e0, 0x3e1, 0x3e2));
+    footSensors.push_back(new ForcePlateSensor(0x3e3, 0x3e4, 0x3e5));
+
+    // Add to input stack
+    for (uint i = 0; i < footSensors.size(); i++) {
+        inputs.push_back(footSensors[i]);
+    }
 
     // Add two crutch sensors
     crutchSensors.push_back(new RobotousRFT(0xf8, 0xf9, 0xfa));
     crutchSensors.push_back(new RobotousRFT(0xf0, 0xf1, 0xf2));
 
     // Add to input stack
-    for (int i = 0; i < 2; i++) {
+    for (uint i = 0; i < crutchSensors.size(); i++) {
         inputs.push_back(crutchSensors[i]);
     }
 
@@ -52,14 +71,19 @@ LoggingRobot::~LoggingRobot() {
         spdlog::info("Delete Crutch Sensor with CommandID: 0x{0:x}", cs->getCommandID());
         delete cs;
     }
-    delete forcePlate;
+    for (auto fp : forcePlates){
+        delete fp;
+    }
+    for (auto fs : footSensors) {
+        delete fs;
+    }
     inputs.clear();
 
     spdlog::debug("LoggingRobot deleted");
 }
 
 bool LoggingRobot::configureMasterPDOs() {
-
+/*
     // Position/Velocity PDOs
     for (int i = 0; i < numJoints; i++){
         void *dataEntryMotor[2] = {(void *)&motorPositions(i), (void *)&motorVelocities(i)};
@@ -85,12 +109,13 @@ bool LoggingRobot::configureMasterPDOs() {
     UNSIGNED16 dataSize[1] = {2};
     rpdos.push_back(new RPDO(0x192, 0xff, tempDataEntryPointer, dataSize, 1));
 
+    dataSize[0] = 1;
     tempDataEntryPointer[0] = {(void *)&state};
     rpdos.push_back(new RPDO(0x211, 0xff, tempDataEntryPointer, dataSize, 1));
 
     tempDataEntryPointer[0] = {(void *)&currentMotion};
     rpdos.push_back(new RPDO(0x212, 0xff, tempDataEntryPointer, dataSize, 1));
-
+*/
     return Robot::configureMasterPDOs();
 }
 
@@ -106,10 +131,10 @@ Eigen::Matrix<INTEGER16, Eigen::Dynamic, 1>& LoggingRobot::getMotorTorques() {
 INTEGER16& LoggingRobot::getGoButton() {
     return goButton;
 }
-INTEGER16&  LoggingRobot::getCurrentState() {
+INTEGER8&  LoggingRobot::getCurrentState() {
     return state;
 }
-INTEGER16&  LoggingRobot::getCurrentMovement() {
+INTEGER8&  LoggingRobot::getCurrentMovement() {
     return currentMotion;
 }
 
@@ -120,7 +145,25 @@ Eigen::VectorXd& LoggingRobot::getCrutchReadings() {
 }
 
 Eigen::VectorXi& LoggingRobot::getForcePlateReadings() {
-    return forcePlate->getForces();
+    forcePlateForces = Eigen::VectorXi::Zero(forcePlates.size() * 4);
+    int i = 0;
+    for (auto fp : forcePlates) {
+        forcePlateForces.segment<4>(i * 4) = fp->getForces();
+        i++;
+    }
+
+    return forcePlateForces;
+}
+
+Eigen::VectorXi& LoggingRobot::getFootSensorReadings() {
+    footSensorForces = Eigen::VectorXi::Zero(footSensors.size() * 4);
+    int i = 0;
+    for (auto fs : footSensors) {
+        footSensorForces.segment<4>(i * 4) = fs->getForces();
+        i++;
+    }
+
+    return footSensorForces;
 }
 
 void LoggingRobot::updateCrutchReadings(){
@@ -145,8 +188,22 @@ void LoggingRobot::setCrutchOffsets(Eigen::VectorXd offsets) {
 }
 
 void LoggingRobot::zeroForcePlate() {
-    spdlog::debug("Zeroing Force Plate Sensor");
-    forcePlate->zero();
+    spdlog::debug("Zeroing Force Plate Sensors");
+    for (auto fp :forcePlates){
+        fp->zero();
+    }
+}
+
+void LoggingRobot::zeroLeftFoot() {
+    spdlog::debug("Zeroing Left Foot");
+    footSensors[0]->zero();
+    spdlog::info("{}", (void*)footSensors[0]);
+}
+
+void LoggingRobot::zeroRightFoot() {
+    spdlog::debug("Zeroing Right Foot");
+    footSensors[1]->zero();
+    spdlog::info("{}", (void*)footSensors[1]);
 }
 
 bool LoggingRobot::startSensors() {
@@ -158,8 +215,14 @@ bool LoggingRobot::startSensors() {
         for (unsigned int i = 0; i < crutchSensors.size(); i++) {
             crutchSensors[i]->startStream();
         }
-        forcePlate->startStream();
-        sensorsOn = true; 
+        for (auto fp : forcePlates) {
+            fp->startStream();
+        }
+        for (auto fs : footSensors) {
+            fs->startStream();
+            spdlog::info("{}", (void*)fs);
+        }
+        sensorsOn = true;
         return true;
     }
 }
@@ -169,8 +232,15 @@ bool LoggingRobot::stopSensors() {
         for (unsigned int i = 0; i < crutchSensors.size(); i++) {
             crutchSensors[i]->stopStream();
         }
-        forcePlate->stopStream();
+        for (auto fp : forcePlates) {
+            fp->stopStream();
+        }
+        for (auto fs : footSensors) {
+            fs->stopStream();
+        }
         crutchReadings = Eigen::VectorXd::Zero(6 * crutchSensors.size());
+        forcePlateForces =Eigen::VectorXi::Zero(forcePlates.size() * 4);
+        footSensorForces = Eigen::VectorXi::Zero(footSensors.size() * 4);
         sensorsOn = false;
         return true;
     } else {

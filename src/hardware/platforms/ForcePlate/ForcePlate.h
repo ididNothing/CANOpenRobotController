@@ -7,7 +7,7 @@
  * \copyright Copyright (c) 2021
  *
  * \brief  The<code> ForcePlate</ code> class is a force plate object, which measures 4 strain gauages - designed to provide force and COP measurements
- * 
+ *
  * This class is designed to work with the sensor system developed at the University of Melbourne's Human Robotics Laboratory
  *
  */
@@ -31,8 +31,7 @@ class ForcePlate : public Robot {
     bool sensorsOn =  false;
     ForcePlateCommand currCommand = NONE;
 
-    TPDO* tpdo1;
-    TPDO* tpdo2;
+    std::vector<TPDO*> tpdos;
 
     RPDO* rpdoCmd;
     void updatePDOs();
@@ -40,7 +39,7 @@ class ForcePlate : public Robot {
    public:
     Keyboard *keyboard;
 
-    ForcePlate();
+    ForcePlate(std::string robot_name="", std::string yaml_config_file="");
     ~ForcePlate();
 
     // Functions which are needed for the Robot Class - they don't do anything at the moment

@@ -12,6 +12,12 @@ Keyboard::Keyboard() {
     noecho.c_lflag = noecho.c_lflag ^ ECHO;
     /* set the terminal */
     tcsetattr(STDIN_FILENO, TCSANOW, &noecho);
+
+    for(int i=0; i<10; i++) {
+        currentKeyStates.Nb.push_back(false);
+    }
+    clearCurrentStates();
+
     spdlog::debug("Keyboard object created, echo disabled");
 }
 Keyboard::~Keyboard() {
@@ -20,7 +26,6 @@ Keyboard::~Keyboard() {
     spdlog::debug("Keyboard object deleted, echo enabled");
 };
 void Keyboard::updateInput() {
-    // usleep(1);
     clearCurrentStates();
     setKeyboardActive(kbhit());
     if (getKeyboardActive() != 0) {
@@ -70,51 +75,20 @@ void Keyboard::setKeys() {
             keyboardActive = 0;
     }
     //Number keys
-    if(ch>=48 && ch<48+10){
+    if(ch>=48 && ch<48+currentKeyStates.Nb.size()){
         currentKeyStates.Nb[ch-48] = true;
         keyboardActive = 1;
     }
+    //Any key
+    currentKeyStates.key_code = ch;
 }
 
-key_states Keyboard::getStates() {
-    key_states current_state = {this->currentKeyStates.a, this->currentKeyStates.s,
-                                this->currentKeyStates.d, this->currentKeyStates.w,
-                                this->currentKeyStates.x, this->currentKeyStates.x,
-                                this->currentKeyStates.e};
-    return current_state;
-};
 void Keyboard::printPressed() {
-    if (getA()) {
-        std::cout
-            << "PRESSED A " << std::endl;
+    if (getNb()>=0) {
+        spdlog::info("PRESSED #{}", getNb());
     }
-    if (getS()) {
-        std::cout
-            << "PRESSED S " << std::endl;
-    }
-    if (getD()) {
-        std::cout
-            << "PRESSED D " << std::endl;
-    }
-    if (getE()) {
-        std::cout
-            << "PRESSED E " << std::endl;
-    }
-    if (getW()) {
-        std::cout
-            << "PRESSED W " << std::endl;
-    }
-    if (getX()) {
-        std::cout
-            << "PRESSED X " << std::endl;
-    }
-    if (getQ()) {
-        std::cout
-            << "PRESSED Q " << std::endl;
-    }
-    if (getNb()>0) {
-        std::cout
-            << "PRESSED " << getNb() << std::endl;
+    if (getKeyUC()>0) {
+        spdlog::info("PRESSED {}", (char)getKeyUC());
     }
 }
 void Keyboard::clearCurrentStates() {
@@ -127,11 +101,12 @@ void Keyboard::clearCurrentStates() {
     currentKeyStates.q = false;
     for(unsigned int i=0; i<10; i++)
         currentKeyStates.Nb[i] = false;
+    currentKeyStates.key_code = -1;
 }
+
 bool Keyboard::getA() {
     return currentKeyStates.a;
-};
-
+}
 bool Keyboard::getS() {
     return currentKeyStates.s;
 };
@@ -140,24 +115,39 @@ bool Keyboard::getE() {
 };
 bool Keyboard::getD() {
     return currentKeyStates.d;
-};
+}
 bool Keyboard::getW() {
     return currentKeyStates.w;
-};
+}
 bool Keyboard::getX() {
     return currentKeyStates.x;
-};
+}
 bool Keyboard::getQ() {
     return currentKeyStates.q;
-};
+}
 int Keyboard::getNb() {
-    for(unsigned int i=0; i<10; i++) {
+    for(unsigned int i=0; i<currentKeyStates.Nb.size(); i++) {
         if(currentKeyStates.Nb[i]){
             return i;
         }
     }
     return -1;
-};
+}
+int Keyboard::getKeyCode() {
+    return currentKeyStates.key_code;
+}
+int Keyboard::getKeyUC() {
+    //Lower-case
+    if(currentKeyStates.key_code>=97 && currentKeyStates.key_code<=122) {
+        return (char) (currentKeyStates.key_code-32);
+    }
+    //Upper-case
+    if(currentKeyStates.key_code>=65 && currentKeyStates.key_code<=90) {
+        return (char) (currentKeyStates.key_code);
+    }
+    return -1;
+}
+
 int Keyboard::kbhit() {
     struct timeval tv;
     fd_set fds;
