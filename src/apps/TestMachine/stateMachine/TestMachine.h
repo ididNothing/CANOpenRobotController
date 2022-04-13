@@ -46,13 +46,12 @@
 #include "SittingDwn.h"
 #include "Standing.h"
 #include "StandingUp.h"
-#include "TestNode.h"
 
 /**
  * @brief Example implementation of a StateMachine for the ExoRobot class. States should implemented ExoTestState
  *
  */
-class ExoTestMachine : public StateMachine {
+class TestMachine : public StateMachine {
    public:
     bool running = false;
 
@@ -64,7 +63,7 @@ class ExoTestMachine : public StateMachine {
      *  \todo Pilot Parameters would be set in constructor here
      *
      */
-    ExoTestMachine();
+    TestMachine();
     void init();
     void end();
 
@@ -86,7 +85,6 @@ class ExoTestMachine : public StateMachine {
     StandingUp *standingUp;
     Sitting *sitting;
     Standing *standing;
-    
 
    protected:
     X2Robot *robot;        /*<!Pointer to the Robot*/
@@ -106,7 +104,6 @@ class ExoTestMachine : public StateMachine {
     EventObject(StartExoCal) * startExoCal;
     EventObject(StartSit) * startSit;
     EventObject(StartStand) * startStand;
-    TestNode *testNode;
 };
 
 #endif /*EXO_SM_H*/

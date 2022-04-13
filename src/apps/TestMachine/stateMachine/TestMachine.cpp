@@ -1,9 +1,9 @@
 
-#include "ExoTestMachine.h"
+#include "TestMachine.h"
 
-#define OWNER ((ExoTestMachine *)owner)
+#define OWNER ((TestMachine *)owner)
 
-ExoTestMachine::ExoTestMachine() {
+TestMachine::TestMachine() {
     trajectoryGenerator = new DummyTrajectoryGenerator(X2_NUM_JOINTS);
     robot = new X2Robot();
 
@@ -42,8 +42,8 @@ ExoTestMachine::ExoTestMachine() {
  * for example initialising robot objects.
  *
  */
-void ExoTestMachine::init() {
-    spdlog::debug("ExoTestMachine::init()");
+void TestMachine::init() {
+    spdlog::debug("TestMachine::init()");
     initialised = robot->initialise();
     running = true;
 
@@ -53,13 +53,10 @@ void ExoTestMachine::init() {
     dataLogger.add(time, "time");
     dataLogger.add(robot->getPosition(), "JointPositions");
     dataLogger.startLogger();
-    testNode = new TestNode(22);
-    testNode->configureMasterPDOs();
-    
 }
 
-void ExoTestMachine::end() {
-    spdlog::debug("Ending ExoTestMachine");
+void TestMachine::end() {
+    spdlog::debug("Ending TestMachine");
     dataLogger.endLog();
     delete robot;
 }
@@ -71,50 +68,30 @@ void ExoTestMachine::end() {
      * \brief poll the trajectory Generators flag to see if the currently loaded motion is complete
      *
      */
-bool ExoTestMachine::EndTraj::check() {
+bool TestMachine::EndTraj::check() {
     return OWNER->trajectoryGenerator->isTrajectoryFinished();
 }
-bool ExoTestMachine::IsAPressed::check(void) {
+bool TestMachine::IsAPressed::check(void) {
     if (OWNER->robot->keyboard->getA() == true) {
         return true;
     }
     return false;
 }
-bool ExoTestMachine::StartButtonsPressed::check(void) {
+bool TestMachine::StartButtonsPressed::check(void) {
     if (OWNER->robot->keyboard->getW() == true) {
         return true;
     }
     return false;
 }
-bool ExoTestMachine::StartExoCal::check(void) {
-    if (OWNER->robot->keyboard->getA() == true) {
-        spdlog::info("LEAVING INIT and entering Sitting");
-        spdlog::info("Performing joint homing");
 
-        std::vector<int> homingDirection = { -1, 0, 0, 0};
-        float thresholdTorque = 5; // Nm
-        float delayTime = 0.5;  // s
-        float homingSpeed = 0.1;  // [rad/s]
-        float maxTime = 5; // s
-
-        OWNER->robot->homing(homingDirection, thresholdTorque, delayTime, homingSpeed, maxTime);
-
-        spdlog::info("Homing complete");
-
-        spdlog::info("Setting to Position Control");
-        OWNER->robot->initPositionControl();
-        return true;
-    }
-    return false;
-}
-bool ExoTestMachine::StartExo::check(void) {
+bool TestMachine::StartExo::check(void) {
     if (OWNER->robot->keyboard->getS() == true) {
         spdlog::info("LEAVING INIT and entering Sitting");
         return true;
     }
     return false;
 }
-/*bool ExoTestMachine::StartExoCal::check(void) {
+bool TestMachine::StartExoCal::check(void) {
     if (OWNER->robot->keyboard->getA() == true) {
         #ifndef NOROBOT
             spdlog::info("LEAVING INIT and entering Sitting");
@@ -129,16 +106,16 @@ bool ExoTestMachine::StartExo::check(void) {
         return true;
     }
     return false;
-}*/
+}
 
-bool ExoTestMachine::StartStand::check(void) {
+bool TestMachine::StartStand::check(void) {
     if (OWNER->robot->keyboard->getW() == true) {
         return true;
     }
     return false;
 }
 
-bool ExoTestMachine::StartSit::check(void) {
+bool TestMachine::StartSit::check(void) {
     if (OWNER->robot->keyboard->getW()) {
         return true;
     }
@@ -149,29 +126,26 @@ bool ExoTestMachine::StartSit::check(void) {
  * that need to run every program loop update cycle.
  *
  */
-void ExoTestMachine::hwStateUpdate(void) {
+void TestMachine::hwStateUpdate(void) {
     robot->updateRobot();
 }
 
-void ExoTestMachine::configureMasterPDOs() {
-    spdlog::debug("ExoTestMachine::configureMasterPDOs()");
+void TestMachine::configureMasterPDOs() {
+    spdlog::debug("TestMachine::configureMasterPDOs()");
     robot->configureMasterPDOs();
-    
 }
 
 /**
  * \brief Statemachine update: overloaded to include logging
  *
  */
-void ExoTestMachine::update() {
+void TestMachine::update() {
     // Update time (used for log)
     time = (std::chrono::duration_cast<std::chrono::microseconds>(
                 std::chrono::steady_clock::now() - time0)
                 .count()) /
            1e6;
-    //spdlog::trace("Update()");
+    spdlog::trace("Update()");
     StateMachine::update();
     dataLogger.recordLogData();
-    testNode->GetRawData();
-    
 }

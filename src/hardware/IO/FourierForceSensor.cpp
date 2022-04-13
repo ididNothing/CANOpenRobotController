@@ -6,12 +6,13 @@ FourierForceSensor::FourierForceSensor(int sensor_can_node_ID, double scale_fact
                                                                                                         calibrated(false),
                                                                                                         calibrationTime(calib_time),
                                                                                                         calibrationOffset(1500){
+spdlog::debug("[FourierForceSensor:]: Force Sensor with nodeID {}", sensor_can_node_ID);
 }
 
 bool FourierForceSensor::configureMasterPDOs() {
     UNSIGNED16 dataSize[2] = {4, 4};
     void *dataEntry[2] = {(void *)&rawData[0],
-                           (void *)&rawData[1],};
+                           (void *)&rawData[1]};
 
     rpdo = new RPDO(0x180+sensorNodeID, 0xff, dataEntry, dataSize, 2);
 

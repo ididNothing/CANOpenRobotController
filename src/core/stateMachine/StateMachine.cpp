@@ -28,7 +28,7 @@ void StateMachine::activate(void) {
 }
 
 void StateMachine::update(void) {
-    spdlog::trace("StateMachine::update()");
+    //spdlog::trace("StateMachine::update()");
     Transition *t = currentState->getActiveArc();
 
     if (t != NULL) {
