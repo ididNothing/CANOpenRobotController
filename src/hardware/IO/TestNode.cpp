@@ -13,7 +13,7 @@ bool TestNode::configureMasterPDOs(){
     void *dataEntry[2] = {(void *)&rawData[0],
                            (void *)&rawData[1],};
 
-    rpdo1 = new RPDO(0X210, 0x00, dataEntry, dataSize, 2); //COB-ID, transmission type, dataEntry, dataSize number of mapped objects
+    rpdo1 = new RPDO(0X210, 0xFF, dataEntry, dataSize, 2); //COB-ID, transmission type, dataEntry, dataSize number of mapped objects
 
     return true;
 }

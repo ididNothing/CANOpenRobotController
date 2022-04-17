@@ -46,15 +46,15 @@ void ExoTestMachine::init() {
     spdlog::debug("ExoTestMachine::init()");
     initialised = robot->initialise();
     running = true;
-
+	
     // Initialising the data logger
     time0 = std::chrono::steady_clock::now();
     dataLogger.initLogger("test_logger", "logs/testLog.csv", LogFormat::CSV, true);
     dataLogger.add(time, "time");
     dataLogger.add(robot->getPosition(), "JointPositions");
     dataLogger.startLogger();
-    testNode = new TestNode(22);
-    testNode->configureMasterPDOs();
+    
+    
     
 }
 
@@ -156,6 +156,8 @@ void ExoTestMachine::hwStateUpdate(void) {
 void ExoTestMachine::configureMasterPDOs() {
     spdlog::debug("ExoTestMachine::configureMasterPDOs()");
     robot->configureMasterPDOs();
+    testNode = new TestNode(22);
+    testNode->configureMasterPDOs();
     
 }
 
